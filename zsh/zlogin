@@ -1,0 +1,54 @@
+## ===========================================================================
+##  This file is remotely maintained.  Changes to this copy are void.
+## ===========================================================================
+##  NAME:       /etc/zlogin
+##  TYPE:       zsh script
+##  PROJECT:    zsh
+##  CONTENT:    setup for login shells
+## ===========================================================================
+##  AUTHORS:    rft     Robert F. Tobler
+## ===========================================================================
+##  HISTORY:
+##
+##  31-Dec-96  9:44:25  rft     last modification
+##  24-Oct-96 11:28:02  rft     split global and user environment
+##  09-Jul-96 17:15:17  rft     added suspend to stty flags
+##  02-Apr-96 16:59:32  rft     created this file
+## ===========================================================================
+##  DESCRIPTION:
+##      '/etc/zlogin' is sourced in login shells.  It is sourced before
+##      '~/.zlogin'.  Both these files should contain commands that should be
+##      executed only in login shells.  They should be used to set the
+##      terminal type and run a series of external commands (fortune, news,
+##      msgs, from, etc).
+## ===========================================================================
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "## begin 'zlogin'"
+## ---------------------------------------------------------------------------
+
+stty erase "^?" intr "^C" kill "^U" susp "^Z"
+#stty -tabs
+if [[ $OSTYPE != linux && $OSTYPE != irix6.2 && $VENDOR != apple ]] ; then
+    export TERM ; TERM=`tset - -Q`
+fi
+
+if [[ $OSTYPE == irix6.2 && $TERM == vt200 ]] ; then
+    export TERM=vt100
+fi
+
+#if [[ $VENDOR == apple ]] ; then	# this was a Nextstep bug. I don't think
+#    stty -extproc			# its still around in Darwin 1.4
+#fi
+
+if [[ $OSTYPE != apple && $TERM == d0 ]] ; then
+    export TERM=vt100
+fi
+
+ttyctl -f  # freeze the terminal modes... can't change without a ttyctl -u
+
+settitle $HOST_WITHOUT_DOMAIN:$USER
+
+cd
+
+## ---------------------------------------------------------------------------
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "## end   'zlogin'"
+## ===========================================================================

@@ -1,0 +1,136 @@
+## ===========================================================================
+##  This file is remotely maintained.  Changes to this copy are void.
+## ===========================================================================
+##  NAME:       $CG_ZSH_DIR/site/zshenv
+##  TYPE:       zsh script
+##  PROJECT:    zsh
+##  CONTENT:    site-specific setup for all shells
+## ===========================================================================
+##  AUTHORS:    rft     Robert F. Tobler
+## ===========================================================================
+##  HISTORY:
+##
+##  02-Oct-98 20:34:14  rft     irix 6.x adaptations
+##  13-Oct-97 17:49:34  rft     split off of zshenv
+##  13-Oct-97 17:49:34  rft     created this file
+## ===========================================================================
+##  DESCRIPTION
+##      '$CG_ZSH_DIR/site/zshenv' is sourced by '$CG_ZSH_DIR/zshenv'.  It is
+##      intended to contain site specific environment variables.
+## ===========================================================================
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "##   begin 'site/zshenv'"
+## ---------------------------------------------------------------------------
+
+p_local=(/usr/cg/bin $p_local)
+p_local=(/usr/freeware/bin $p_local)
+p_local=(/usr/gnu/bin $p_local)
+p_local=(/usr/local/teTeX/bin $p_local)
+
+export CG_ADMIN=leim
+export CG_CLUSTER=knieriem:leim:salome:schnoferl:titus:weinberl:marille:ringlotte:zwetschke
+export CG_HOSTS=ray:raven:radwawana:launzatte:zwirn:$CG_CLUSTER
+export CG_PRINTER_LIST="Druckwerk RavenPrinter Klexer"
+export EDITOR=vi
+export PRINTER=Druckwerk
+export PYTHONPATH=/usr/local/lib/python-extensions
+export MTEX_DIR=/usr/cg/lib/mTeX
+export VEGA_DIR=/usr/cg/projects/VEGA
+export VR_DIR=/usr/cg/projects/VR
+export VIS_DIR=/usr/cg/projects/Vis
+
+if [[ $OSTYPE == rhapsody5.2 ]] ; then
+    export MTEX_DIR=/usr/local/lib/mTeX
+fi
+
+if [[ $VENDOR == sgi ]] ; then
+    export AVS_HELP_PATH=/usr/cg/projects/Vis/AVS/ModuleDocu
+    export AVS_PATH=/usr/cg/avs
+    MANPATH=/usr/share/catman:/usr/share/man:/usr/catman
+    MANPATH=/usr/local/man:/usr/cg/man:/usr/gnu/man:/usr/cg/teTeX/man:$MANPATH
+    export MANPATH
+    export XFILESEARCHPATH=/usr/lib/X11/%T/%N:/usr/local/lib/X11/%T/%N
+
+fi
+
+if [[ $OSTYPE == irix5.3 ]] ; then
+    export AMS_CONFIG=mips--irix5.3-a
+    export ART_CONFIG=mips--irix5.3-gcc-a
+
+    export LD_LIBRARY_PATH=/usr/lib:/lib:/usr/local/lib:/usr/cg/lib
+    export LD_LIBRARYN32_PATH=/usr/lib32:/lib32:/usr/local/lib:/usr/cg/lib
+    export LD_LIBRARY64_PATH=/usr/lib64:/lib:/usr/local/lib:/usr/cg/lib
+
+    export GROFF_TMAC_PATH=/usr/cg/lib/groff
+    export GROFF_FONT_PATH=/usr/cg/lib/groff/font
+fi
+
+if [[ $OSTYPE == irix6.2 ]] ; then
+    export AMS_CONFIG=mips--irix6.5-gcc-a
+    export ART_CONFIG=mips--irix6.5-gcc-a
+
+    LD_LIBRARY_PATH=/usr/lib:/lib:/usr/local/lib
+    LD_LIBRARYN32_PATH=/usr/lib32:/lib32:/usr/local/lib
+    LD_LIBRARY64_PATH=/usr/lib64:/lib:/usr/local/lib
+
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/freeware/lib:/usr/cg/lib
+    LD_LIBRARYN32_PATH=$LD_LIBRARYN32_PATH:/usr/freeware/lib32:/usr/cg/lib
+    LD_LIBRARY64_PATH=$LD_LIBRARY64_PATH:/usr/freeware/lib64:/usr/cg/lib
+
+    export LD_LIBRARY_PATH
+    export LD_LIBRARYN32_PATH
+    export LD_LIBRARY64_PATH
+    export MANPAGER=less
+
+    export GROFF_TMAC_PATH=/usr/freeware/lib/groff
+    export GROFF_FONT_PATH=/usr/freeware/lib/groff/font
+fi
+
+[[ -z "${ART_DIR}" && -d ~/ART ]] &&		export ART_DIR=~/ART
+[[ -z "${ART_DIR}" && -d ~/Projects/ART ]] &&	export ART_DIR=~/Projects/ART
+
+[[ -z "${AMS_DIR}" && -d ~/AMS ]] &&		export AMS_DIR=~/AMS
+[[ -z "${AMS_DIR}" && -d ~/Projects/AMS ]] &&	export AMS_DIR=~/Projects/AMS
+
+if [[ -z "${AMS_DIR}" && -d /usr/local/projects/AMS ]] ; then
+    export AMS_DIR=/usr/local/projects/AMS
+fi
+
+if [[ -z "${AMS_DIR}" && -d /usr/cg/projects/AMS ]] ; then
+    export AMS_DIR=/usr/cg/projects/AMS
+fi
+
+if [ -n "${AMS_DIR}" ] ; then
+    [[ $OSTYPE == irix5.3 ]] && export AMS_CONFIG=mips--irix5.3-gcc-a
+    [[ $OSTYPE == irix6.2 ]] && export AMS_CONFIG=mips--irix6.5-gcc-a
+    [[ $OSTYPE == nextstep3 ]] && export AMS_CONFIG=$MACHTYPE--nextstep3-gcc
+    [[ $OSTYPE == rhapsody5.2 ]] && export AMS_CONFIG=ppc--rhapsody5-gcc
+
+    if [[ $OSTYPE == linux ]] ; then
+	cg_zsh_machine=$MACHTYPE
+	[[ $cg_zsh_machine == powerpc ]] && cg_zsh_machine=ppc
+	export AMS_CONFIG=$cg_zsh_machine--linux-gcc
+	if [[ $HOST_WITHOUT_DOMAIN == launzatte ]] ; then
+	    export AMS_CONFIG=$cg_zsh_machine--linux-egcs
+	fi
+	unset cg_zsh_machine
+
+	export USER=$LOGNAME
+    fi
+
+    [[ $OSTYPE == linux ]] && export ART_VIEWER=$ART_DIR/bin/xv.stub
+fi
+
+if [ -n "${ART_DIR}" ] ; then
+    p_user=($ART_DIR/bin $p_user)
+    export AMS_TYPE=RGB
+    export ART_CONFIG=$AMS_CONFIG
+    [[ $OSTYPE == nextstep3 ]] && export ART_CONFIG=nextstep3
+    [[ $OSTYPE == rhapsody5.2 ]] && export ART_CONFIG=rhapsody5
+    if [[ $OSTYPE == nextstep3  || $OSTYPE == rhapsody5.2 ]] ; then
+	export ART_VIEWER='open'
+    fi
+fi
+
+## ---------------------------------------------------------------------------
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "##   end   'site/zshenv'"
+## ===========================================================================

@@ -1,0 +1,110 @@
+## ===========================================================================
+##  This file is remotely maintained.  Changes to this copy are void.
+## ===========================================================================
+##  NAME:       $CG_ZSH_DIR/site/zshrc
+##  TYPE:       zsh script
+##  PROJECT:    zsh
+##  CONTENT:    site-specific setup for interactive shells
+## ===========================================================================
+##  AUTHORS:    rft     Robert F. Tobler
+## ===========================================================================
+##  HISTORY:
+##
+##  13-Oct-97 17:49:34  rft     split off of zshrc
+##  13-Oct-97 17:49:34  rft     created this file
+## ===========================================================================
+##  DESCRIPTION
+##      '$CG_ZSH_DIR/site/zshrc' is sourced by '$CG_ZSH_DIR/zshrc'.  It is
+##	intended to contain commands to set up site-specific aliases,
+##	functions, options, key bindings, etc.
+## ===========================================================================
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "##   begin 'site/zshrc'"
+## ---------------------------------------------------------------------------
+
+## --------------------------------------------------------------------- NeXTs
+
+alias @ray='remoteshell ray.cg.tuwien.ac.at'		    # 128.130.166.18
+alias @raven='remoteshell raven.cg.tuwien.ac.at'	    # 128.130.166.19
+alias @raccoon='remoteshell raccoon.cg.tuwien.ac.at'	    # 128.130.166.105
+alias @narya='remoteshell narya.cg.tuwien.ac.at'	    # 128.130.166.74
+
+## ---------------------------------------------------------------------- SGIs
+
+alias @knieriem='remoteshell knieriem.cg.tuwien.ac.at'	    # 128.130.166.80
+alias @leim='remoteshell leim.cg.tuwien.ac.at'		    # 128.130.166.17
+alias @salome='remoteshell salome.cg.tuwien.ac.at'	    # 128.130.166.13
+alias @schnoferl='remoteshell schnoferl.cg.tuwien.ac.at'    # 128.130.166.15
+alias @stellaris='remoteshell stellaris.cg.tuwien.ac.at'    # 128.130.166.12
+alias @titus='remoteshell titus.cg.tuwien.ac.at'	    # 128.130.166.14
+alias @weinberl='remoteshell weinberl.cg.tuwien.ac.at'	    # 128.130.166.16
+alias @marille='remoteshell marille.cg.tuwien.ac.at'	    # 128.130.166.93
+alias @ribisl='remoteshell ribisl.cg.tuwien.ac.at'	    # 128.130.166.96
+alias @ringlotte='remoteshell ringlotte.cg.tuwien.ac.at'    # 128.130.166.95
+alias @zwetschke='remoteshell zwetschke.cg.tuwien.ac.at'    # 128.130.166.94
+
+## ------------------------------------------------------------------- LINUXes
+
+alias @christl='remoteshell christl.cg.tuwien.ac.at'	    # 128.130.166.76
+alias @launzatte='remoteshell launzatte.cg.tuwien.ac.at'    # 128.130.166.38
+alias @piano='remoteshell piano.cg.tuwien.ac.at'	    # 128.130.166.32
+alias @radawana='remoteshell radawana.cg.tuwien.ac.at'	    # 128.130.166.35
+alias @tracksau='remoteshell tracksau.cg.tuwien.ac.at'	    # 128.130.166.78
+alias @triffid='remoteshell triffid.cg.tuwien.ac.at'	    # 128.130.166.100
+alias @zwirn='remoteshell zwirn.cg.tuwien.ac.at'	    # 128.130.166.31
+
+## -------------------------------------------------------------------- remote
+
+alias @eiunix='remoteshell eiunix.tuwien.ac.at'		    # 128.130.165.18
+alias @aida='remoteshell aida.inflab.tuwien.ac.at'	    # 128.130.121.4
+alias @carmen='remoteshell carmen.inflab.tuwien.ac.at'	    # 128.130.121.6
+alias @fpr='remoteshell fpr.zserv.tuwien.ac.at'		    # 128.130.4.45
+
+## ------------------------------------------------------------ user selection
+
+[[ $USER == 'dieter'	]]	&& CG_SYSADM=1	&& CG_ALGODAT=1
+[[ $USER == 'fuhrmann'	]]	&& CG_SYSADM=1
+[[ $USER == 'mantler'	]]	&& CG_SYSADM=1
+[[ $USER == 'helmut'	]]			&& CG_ALGODAT=1
+[[ $USER == 'helwig'	]]	&& CG_SYSADM=1	&& CG_ALGODAT=1
+[[ $USER == 'hesina'	]]	&& CG_SYSADM=1	&& CG_ALGODAT=1
+[[ $USER == 'prikryl'	]]	&& CG_SYSADM=1
+[[ $USER == 'rft'	]]	&& CG_SYSADM=1	&& CG_ALGODAT=1
+[[ $USER == 'step'	]]	&& CG_SYSADM=1
+
+if [[ ${+CG_SYSADM} == 1 ]] ; then
+    alias @knieriem:sysadm='@knieriem -l sysadm'
+    alias @leim:sysadm='@leim -l sysadm'
+    alias @salome:sysadm='@salome -l sysadm'
+    alias @schnoferl:sysadm='@schnoferl -l sysadm'
+    alias @stellaris:sysadm='@stellaris -l sysadm'
+    alias @titus:sysadm='@titus -l sysadm'
+    alias @weinberl:sysadm='@weinberl -l sysadm'
+    alias @marille:sysadm='@marille -l sysadm'
+    alias @ribisl:sysadm='@ribisl -l sysadm'
+    alias @ringlotte:sysadm='@ringlotte -l sysadm'
+    alias @zwetschke:sysadm='@zwetschke -l sysadm'
+
+    alias @christl:sysadm='@christl -l sysadm'
+    alias @tracksau:sysadm='@tracksau -l sysadm'
+    alias @triffid:sysadm='@triffid -l sysadm'
+    alias @zwirn:sysadm='@zwirn -l sysadm'
+fi
+
+if [[ ${+CG_ALGODAT} == 1 ]] ; then
+    alias @aida:algodat='@aida -l algodat'
+    alias @carmen:algodat='@carmen -l algodat'
+fi
+
+## ---------------------------------------------------------------------------
+##  Completions by rft
+##
+
+compctl  -g '*(-/)' + -g '*.arm' + -g '*.art' -x 'c[-1,-rnd][-1,-cam]' -g '*.arm' -g '*.art' -- artist
+compctl  -g '*(-/)' + -g '*.arm' art
+
+compctl -f + -x 's[-P]' -k "( $CG_PRINTER_LIST )" -- lpr
+compctl -x 's[-P]' -k "( $CG_PRINTER_LIST )" -- lprm lpq
+
+## ---------------------------------------------------------------------------
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "##   end   'site/zshrc'"
+## ===========================================================================

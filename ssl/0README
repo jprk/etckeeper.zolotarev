@@ -1,0 +1,2 @@
+Use /usr/sbin/make-ssl-cert /etc/ssl/zolotarev.ssleay.cnf <certificate> to
+generate self-signed certificates.

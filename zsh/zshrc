@@ -1,0 +1,836 @@
+## ===========================================================================
+##  This file is remotely maintained.  Changes to this copy are void.
+## ===========================================================================
+##  NAME:       /etc/zshrc
+##  TYPE:       zsh script
+##  PROJECT:    zsh
+##  CONTENT:    setup for interactive shells
+## ===========================================================================
+##  AUTHORS:    rft     Robert F. Tobler
+## ===========================================================================
+##  HISTORY:
+##
+##  05-Jun-97 20:18:46  rft     last modification
+##  24-Oct-96 11:28:02  rft     split global and user environment
+##  09-Oct-96 10:36:06  rft     removed GLOB_DOTS option, removed FIGNORE=.o
+##  02-Apr-96 16:59:32  rft     created this file
+## ===========================================================================
+##  DESCRIPTION
+##      '/etc/zshrc' is sourced in interactive shells.  It is sourced before
+##      '~/.zshrc'.  Both these files should contain commands to set up
+##      aliases, functions, options, key bindings, etc.
+## ===========================================================================
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "## begin 'zshrc'"
+## ---------------------------------------------------------------------------
+
+## uncomment the following to skip memory-hungry options (e.g. completions)
+## CG_ZSH_LOWMEMORY=yes
+
+## ----------------------------------------- keep large history in ~/.zhistory
+HISTFILE=~/.zhistory
+
+if [[ $CG_ZSH_LOWMEMORY == yes ]] ; then
+    HISTSIZE=512
+    SAVEHIST=64
+else
+    HISTSIZE=32768
+    SAVEHIST=8192
+fi
+
+## ------------------------------- CPU stats for commands longer than 1 second
+REPORTTIME=1
+
+TIMEFMT="%E @ %P - %U u %S s: %J"
+
+## --------------------------------------------- remember last 100 directories
+
+if [[ $CG_ZSH_LOWMEMORY == yes ]] ; then
+    DIRSTACKSIZE=8
+else
+    DIRSTACKSIZE=64
+fi
+
+## ---------------------------------------- do not complete on these filetypes
+FIGNORE=
+
+## --------------------------------- time, directory, host, and user in prompt
+
+if [[ $OSTYPE == rhapsody5.2 ]] ; then
+    PRCD='%/'
+else
+    PRCD='%~'
+fi
+
+if [[ $TERM_SETTITLE == 1 ]] ; then
+    PROMPT="%S%D{%T}%s %B$PRCD%b
+%m:%n%(#.#.>)%{$TERM_SETTITLE_BEGIN%m:%n %48<...<$PRCD%<<$TERM_SETTITLE_END%} "
+else
+    PROMPT="%S%D{%T}%s %B$PRCD%b
+%m:%n%(#.#.>) "
+fi
+
+## ------------------ create small files with a command line like this "> foo"
+NULLCMD=cat
+
+## -------------------------- read files with a command line like this "< foo"
+READNULLCMD=less
+
+## ----------------------------------------------------------- options for zsh
+setopt alwaystoend autocd autolist automenu autonamedirs
+setopt autoparamkeys autopushd autoremoveslash bgnice completeinword
+setopt extendedglob hashcmds hashdirs hashlistall histallowclobber
+setopt histignoredups histignorespace histnostore histverify
+setopt kshoptionprint listambiguous listtypes longlistjobs magicequalsubst
+setopt nobadpattern nobanghist nobeep noclobber nohup notify numericglobsort
+setopt promptsubst pushdignoredups pushdsilent pushdtohome rcexpandparam
+setopt rcquotes
+
+## -------------------------------------------------------------- key bindings
+bindkey "^[p" history-beginning-search-backward
+bindkey "^[n" history-beginning-search-forward
+
+## ---------------------------------------------------------- terminal aliases
+alias vt100='export TERM=vt100'
+
+## ---------------------------------------------------------------- ls aliases
+if [[ $VENDOR == sgi ]] ; then
+    alias ll='ls -Fal'
+    alias llA='ls -AFl'
+else
+    alias ll='ls -Fagl'
+    alias llA='ls -AFgl'
+fi
+
+alias ls='ls -AF'
+alias lt='ll -t'
+alias lrt='ll -rt'
+alias ltr='ll -rt'
+
+alias lli='ll -i'
+alias lld='ll -d'
+alias ltd='lt -d'
+alias lrtd='lrt -d'
+alias ltrd='ltr -d'
+
+## --------------------------------------------------------------- gnu aliases
+
+if [[ ${+GNUTAR} == 1 ]] ; then
+    alias gnutar=$GNUTAR
+fi
+
+# ---------------------------------------------------------------- AMS aliases
+
+if [[ ${+GNUMAKE} == 1 ]] ; then
+    alias gnumake=$GNUMAKE
+    alias ams="$GNUMAKE --silent $AMS_OPTIONS"
+    alias amsd="$GNUMAKE --silent $AMS_OPTIONS debug"
+    alias amsp="$GNUMAKE --silent $AMS_OPTIONS profile"
+    alias fams="$GNUMAKE --silent $AMS_OPTIONS AMS_DEPEND=off"
+    alias famsd="$GNUMAKE --silent $AMS_OPTIONS AMS_DEPEND=off debug"
+    alias famsp="$GNUMAKE --silent $AMS_OPTIONS AMS_DEPEND=off profile"
+fi
+
+## ---------------------------------------------------------------- editor 'e'
+
+alias e=$EDITOR
+
+## ------------------------------------------------------------------- save rm
+alias destroy='/bin/rm -rf'
+alias binrm='/bin/rm'
+
+if [[ $OSTYPE == nextstep3 ]] ; then
+    trash_dir=~/.NeXT/.NextTrash
+elif [[ $VENDOR == sgi ]] ; then
+    trash_dir=~/dumpster
+elif [[ $OSTYPE == linux ]] ; then
+    trash_dir=~/.trash
+fi
+
+if [[ ${+trash_dir} == '1' && -d ~trash_dir ]] ; then
+    export SAVE_RM='del'
+    del () { mv $* ~trash_dir }
+    delete () { mv $* ~trash_dir }
+    untrash ()
+	{ local untrashto=$PWD ; cd ~trash_dir ; mv $* $untrashto ; popd }
+    lstrash () {  ls ~trash_dir/ }
+    lltrash () {  llA ~trash_dir/ }
+    emptytrash ()
+    {
+	if [[ -z "`lstrash`" ]] ; then
+	    echo "Trash empty."
+	else
+	    local trash
+	    llA ~trash_dir
+	    read -q 'erase?Erase (y/n) ? ' && \
+		for trash in `lstrash` ; do binrm -rf ~trash_dir/$trash ; done
+	fi
+    }
+
+    compctl -g '~trash_dir/*(:t)' untrash
+fi
+
+## --------------------------------------------- various aliases and functions
+
+alias pwd='/bin/pwd'
+
+mancat () { man $* | cat }
+
+rclean ()
+{
+    find . \( -name '%*' -o -name '*~' -o -name '*.sav' -o -name '*.bak' \
+	-o -name '#*#' -o -name '.*~' \) -print -exec /bin/rm {} \;
+}
+
+settitle ()
+{
+    if [[ $TERM_SETTITLE == 1 ]] ; then
+	echo -n $TERM_SETTITLE_BEGIN$*$TERM_SETTITLE_END
+    fi
+}
+
+if [[ $VENDOR == apple ]] ; then
+    alias df='df -k'
+fi
+
+if [[ $VENDOR == apple || $OSTYPE == linux ]] ; then
+    alias psl='ps awwux'
+
+    psu ()
+    {
+	ps awwux | egrep "%CPU|^$USER" | egrep -v "egrep %CPU"
+    }
+    
+    psgrep ()
+    {
+	ps awwux | egrep "%CPU|$*" | egrep -v "egrep %CPU"
+    }
+
+    pscount ()
+    {
+	ps awwux | egrep "$*" | egrep -v "egrep PPID" | wc -l
+    }
+
+fi
+
+if [[ $VENDOR == sgi ]] ; then
+    alias df='df -k'
+    alias du='du -k'
+
+    alias psl='ps -ef'
+
+    psu ()
+    {
+	ps -ef | egrep "PPID|^ *$USER" | egrep -v "egrep PPID"
+    }
+
+    psgrep ()
+    {
+	ps -ef | egrep "PPID|$*" | egrep -v "egrep PPID"
+    }
+
+    pscount ()
+    {
+	ps -ef | egrep "$*" | egrep -v "egrep PPID" | wc -l
+    }
+
+    alias mesa='export _RLD_LIST="/usr/local/lib/mesa/libGL.so:DEFAULT"'
+fi
+
+pswatch()
+{
+    while [ 1 ] ; do clear ; psgrep $* ; sleep 3 ; done
+}
+
+findfilesthatcontain ()
+{
+    find . -xdev -type f -exec grep -l $* {} \;
+}
+
+functionheaders ()
+{
+    functions|egrep ' \(\) \{$'|sed -e 's/ {//;'
+}
+
+clean ()
+{
+    setopt localoptions nullglob globdots
+    echo -n 'rm:'
+    files=( * )
+    local cleaned_something=0
+    for f in $files ; do
+	case $f in
+	    (*\~|.*\~|\#*\#|*.bak|%*))
+	    	echo -n " $f" ; /bin/rm -f $f ; cleaned_something=1 ;;
+	esac
+    done
+    [[ $cleaned_something == 0 ]] && echo -n ' nothing to clean'
+    echo
+}
+
+tarrcp ()
+{
+    if [[ $# -ge 2 ]] ; then
+    	local dest move host dir thishost
+	dest=$argv[$#]
+	move=( $argv[0,$[$# - 1]] )
+	host=${dest%%:*}
+	dir=${dest##[!:]##:}
+	[[ $host == $dir ]] && dir=''
+	thishost=`hostname`
+	if [[ ${host%%.*} == ${thishost%%.*} ]] ; then
+	    echo 'ERROR: destination host not different from current host!'
+	else
+	    $GNUTAR cf - $move | ssh $host "( cd $dir ;"' $GNUTAR xpvf - )'
+	fi
+    else
+	echo 'USAGE: tarrcp <file|dir> [<file|dir> ...] <host>[:<dest-dir>]'
+    fi
+}
+
+tarcp ()
+{
+    if [[ $# -ge 2 ]] ; then
+    	local dir move
+	dir=$argv[$#]
+	move=( $argv[0,$[$# - 1]] )
+	$GNUTAR cf - $move | ( cd $dir ; $GNUTAR xpvf - )
+    else
+	echo 'USAGE: tarcp <file|dir> [<file|dir> ...] <dest-dir>'
+    fi
+}
+
+alias quit='kill -9 0'
+
+## ---------------------------------------------------------- archive handling
+
+compctl -g '*.tar|*.gnutar|*.tar.*|*.gnutar.*|*.compressed|*.tgz|*.taz|*.zip' + -g '*(-/)' lstar lltar untar mvtar
+
+lstar ()
+{
+    for i in $* ; do
+	case $i in
+	    *.((gnutar|tar).(z|gz|zip|Z)|compressed|taz|tgz) )
+		gunzip <$i | $GNUTAR tf -;;
+	    *.(tar|gnutar) )
+		$GNUTAR tf $i;;
+	    *.zip)
+		unzip -l $i;;
+	    *)
+		echo "unrecognized file type: $i" 1>&2;;
+	esac
+    done
+}
+
+lltar ()
+{
+    for i in $* ; do
+	case $i in
+	    *.((gnutar|tar).(z|gz|zip|Z)|compressed|taz|tgz) )
+		gunzip <$i | $GNUTAR tvf -;;
+	    *.(tar|gnutar) )
+		$GNUTAR tvf $i;;
+	    *.zip)
+		unzip -v $i;;
+	    *)
+		echo "unrecognized file type: $i" 1>&2;;
+	esac
+    done
+}
+
+untar ()
+{
+    for i in $* ; do
+	case $i in
+	    *.((gnutar|tar).(z|gz|zip|Z)|compressed|taz|tgz) )
+		gunzip <$i | $GNUTAR xvf -;;
+	    *.(tar|gnutar) )
+		$GNUTAR xvf $i;;
+	    *.zip)
+		unzip $i;;
+	    *)
+		echo "unrecognized file type: $i" 1>&2;;
+	esac
+    done
+}
+
+mvtar ()
+{
+    for i in $* ; do
+	case $i in
+	    *.((gnutar|tar).(z|gz|zip|Z)|compressed|taz|tgz) )
+		gunzip <$i | $GNUTAR xvf - && del $i ;;
+	    *.(tar|gnutar) )
+		$GNUTAR xvf $i && del $i;;
+	    *.zip)
+		unzip $i && del $i;;
+	    *)
+		echo "Unrecognized file type: $i" 1>&2 ;;
+	esac
+    done
+}
+
+entar ()
+{
+    archive=$1
+    shift
+    case $archive in
+	*.((gnutar|tar).(gz|zip)|tgz) )
+	    $GNUTAR zcvf $archive $* ;;
+	*.((gnutar|tar).(z|Z)|compressed|taz) )
+	    $GNUTAR Zcvf $archive $* ;;
+	*.(tar|gnutar) )
+	    $GNUTAR cvf $archive $* ;;
+	*.zip)
+	    zip -r9y $archive $* ;;
+	*)
+	    echo "Unrecognized file type: $i" 1>&2 ;;
+    esac
+}
+
+## =============================================================== completions
+
+## -------------------------------------------------------- default completion
+
+if [[ $CG_ZSH_LOWMEMORY == yes ]] ; then
+
+compctl -D -f
+
+else
+
+## ---------------------------------------------------------------------------
+##  Change default completion.
+##
+
+multicomp() {
+    ##  Completes all manner of files given prefixes for each path segment.
+    ##  e.g. s/z/s -> src/zsh-2.4/src
+    ##
+    ##  Usage: e.g.
+    ##  compctl -D -f + -U -K multicomp
+    ##
+    ##  Note that exactly matched directories are not expanded, e.g.
+    ##  s/zsh-2.4/s<TAB> will not expand to src/zsh-2.4old/src.
+    ##  Will expand glob patterns already in the word, but use complete-word,
+    ##  not TAB (expand-or-complete), or you will get ordinary glob expansion.
+    ##  Requires the -U option to compctl.
+    ##  Menucompletion is highly recommended for ambiguous matches.
+    ##  Liable to screw up escaped metacharacters royally.
+    ##  $fignore is not used: feel free to add your own bit.
+
+    local pref head sofar origtop newtop globdir="(-/)" wild
+    setopt localoptions nullglob rcexpandparam globdots
+    unsetopt markdirs globsubst shwordsplit nounset
+    
+    pref="${1}$2"
+    # Hack to allow programmable completion to select multicomp after a :
+    # (e.g. compctl -D -f -x 's[:]' -U -K multicomp )
+    pref="${pref#:}"
+    
+    sofar=('')
+    reply=('')
+    
+    if [[ "$pref" = \~* ]]; then
+	# If the string started with ~, save the head and what it will become.
+	origtop="${pref%%/*}"
+	newtop=${~origtop}
+	# Save the expansion as the bit matched already
+	sofar=($newtop)
+	pref="${pref#$origtop}"
+    fi
+    
+    while [[ -n "$pref" ]]; do
+	[[ "$pref" = /* ]] && sofar=(${sofar}/) && pref="${pref#/}"
+	head="${pref%%/*}"
+	pref="${pref#$head}"
+	if [[ -n "$pref" && -z $sofar[2] && -d "${sofar}$head" ]]; then
+	    # Exactly matched directory: don't try to glob
+	    reply=("${sofar}$head")
+	else
+	    [[ -z "$pref" ]] && globdir=
+	    # if path segment contains wildcards, don't add another.
+	    if [[ "$head" = *[\*\?]* ]]; then
+		wild=
+	    else
+		wild='*'
+	    fi
+	    reply=(${sofar}"${head}${wild}${globdir}")
+	    reply=(${~reply})
+	fi
+    
+	[[ -z $reply[1] ]] && reply=() && break
+	[[ -n $pref ]] && sofar=($reply)
+    done
+    
+    # Restore ~'s in front if there were any.
+    # There had better not be anything funny in $newtop.
+    [[ -n "$origtop" ]] && reply=("$origtop"${reply#$newtop})
+}
+
+compctl -D -f + -U -K multicomp
+compctl -C -c + -U -K multicomp
+
+
+# --------------------------------------------------------------------- groups
+# groups=( $(cut -d: -f1 /etc/group) )
+# groups=( $(ypcat group.byname | cut -d: -f1) ) # if you use NIS
+
+# It can be done without forking, but it used too much memory in old zsh's:
+# groups=( "${${(f)$(ypcat groups)}%%:*}" ) # if you use NIS
+
+if [[ ( $OSTYPE == nextstep3 || $VENDOR == apple ) \
+      && -x /usr/bin/nidump ]] ; then
+    listofgroups()
+    {
+	(nidump group / ; nidump group .) | awk -F: '{print $1}'
+    }
+else
+    listofgroups()
+    {
+	grep '^[^#]' /etc/group | awk -F: '{print $1}'
+    }
+fi
+
+completegroups()
+{
+    reply=( $(listofgroups|sort|uniq) )
+}
+
+# ---------------------------------------------------------------------- hosts
+
+if [[ ( $OSTYPE == nextstep3 || $VENDOR == apple ) \
+      && -x /usr/bin/nidump ]] ; then
+    listofhosts()
+    {
+	setopt localoptions nullglob
+	local hosts host_files
+	if [[ ${+HOME_UNIX} == 1 ]] ; then
+	    for hosts ($HOME_UNIX/etc/hosts*) ; do
+	    	grep -h '^[0-9]' $hosts|awk '{print $2}'
+	    done
+	fi
+	(nidump hosts / ; nidump hosts .)|awk '{print $2}'
+    }
+else
+    listofhosts()
+    {
+	setopt localoptions nullglob
+	local hosts host_files
+	if [[ ${+HOME_UNIX} == 1 ]] ; then
+	    for hosts ($HOME_UNIX/etc/hosts*) ; do
+	    	grep -h '^[0-9]' $hosts|awk '{print $2}'
+	    done
+	fi
+	grep -h '^[0-9]' /etc/hosts|awk '{print $2}'
+    }
+fi
+
+completehosts()
+{
+    reply=( $(listofhosts|sort|uniq) )
+}
+
+## ---------------------------------------------------------------------------
+##  Completion for zsh builtins.
+##
+
+compctl -z -P '%' bg
+compctl -j -P '%' fg jobs disown
+compctl -j -P '%' + -s '`ps -x | tail +2 | cut -c1-5`' wait
+compctl -A shift
+compctl -caF type whence which
+compctl -c unhash
+compctl -x 'w[1,-d] p[2]' -n - 'w[1,-d] p[3]' -g '*(-/)' - \
+	'p[1]' -c - 'p[2]' -g '*(-x)' -- hash
+compctl -F functions unfunction
+compctl -a unalias
+compctl -v getln getopts read unset vared
+compctl -v -S '=' -q declare export integer local readonly typeset
+
+if [[ ! $ZSH_VERSION < '3.0.0' ]] ; then
+    compctl -eB -x 'p[1] s[-]' -k '(a f m r)' - \
+	    'C[1,-*a*]' -ea - 'C[1,-*f*]' -eF - 'C[-1,-*r*]' -ew -- disable
+    compctl -dB -x 'p[1] s[-]' -k '(a f m r)' - \
+	    'C[1,-*a*]' -da - 'C[1,-*f*]' -dF - 'C[-1,-*r*]' -dw -- enable
+fi
+compctl -k "(`limit | cut -d' ' -f1`)" limit unlimit
+compctl -l '' -x 'p[1]' -f -- . source
+
+## ---------------------------------------------------------------------------
+##  Redirection below makes zsh silent when completing unsetopt xtrace
+##
+
+compctl -s '$(setopt 2>/dev/null)' + -s 'no${=^$(unsetopt)}' + -o unsetopt
+
+compctl -s '$(unsetopt)' + -s 'no${=^$(setopt 2>/dev/null)}' + -o setopt
+compctl -b bindkey
+compctl -c -x 'C[-1,-*k]' -A - 'C[-1,-*K]' -F -- compctl
+compctl -x 'C[-1,-*e]' -c - 'C[-1,-[ARWI]##]' -f -- fc
+compctl -x 'p[1]' - 'p[2,-1]' -l '' -- sched
+compctl -x 'C[-1,[+-]o]' -o - 'c[-1,-A]' -A -- set
+
+## fpath=...
+## compctl -s '${^fpath}/*(N:t)' autoload
+
+## ---------------------------------------------------------------------------
+##  Anything after nohup is a command by itself with its own completion.
+##
+
+compctl -l '' nohup exec nice eval - time rusage
+
+compctl -l '' -x 'p[1]' -eB -- builtin
+if [[ ! $ZSH_VERSION < '3.0.0' ]] ; then
+    compctl -l '' -x 'p[1]' -em -- command
+fi
+compctl -x 'p[1]' -c - 'p[2,-1]' -k signals -- trap
+
+## ---------------------------------------------------------------------- kill
+##  kill takes signal names as the first argument after -, but job names after
+##  % or PIDs as a last resort
+
+compctl -j -P '%' + -s '`ps -x | tail +2 | cut -c1-5`' + \
+	-x 's[-] p[1]' -k "($signals[1,-3])" -- kill
+
+## ---------------------------------------------------------------------------
+
+compctl -s '$(listofgroups)' + -K completegroups newgrp
+compctl -f -x 'p[1], p[2] C[-1,-*]' -K completegroups -- chgrp
+compctl -f -x 'p[1] n[-1,.], p[2] C[-1,-*] n[-1,.]' -K completegroups \
+	- 'p[1], p[2] C[-1,-*]' -u -S '.' -- chown
+compctl -g '*.x' + -g '*(-/)' rpcgen
+compctl -u -x 's[+] c[-1,-f],s[-f+]' -g '~/Mail/*(:t)' - \
+	's[-f],c[-1,-f]' -f -- mail elm
+
+## ---------------------------------------------------------------------------
+##
+## the following doesn't seem to work reliably [rft]
+##
+## compctl -s "\$(awk '/^[a-zA-Z0-9][^ 	]+:/ {print \$1}' FS=: [mM]akefile)" \
+##	-x 'c[-1,-f]' -f -- make gmake
+
+compctl -x 'C[-1,*f*] C[-1,*z*] p[2]' -g "*(.tar.gz|.tgz)" + -g "*(-/)" -- + -x 'C[-1,*f*] C[-1,*Z*] p[2]' -g "*(.tar.Z|.taz)" + -g '*(-/)' -- + -x 'C[-1,*f*] p[2]' -g "*.tar" + -g '*(-/)' -- + -x 'c[-1,-C] p[3,-1]' -g '*(-/)' -- + -x 'W[1,*f*] C[-1,^-C] p[3,-1]' -f -- tar gnutar
+
+
+## ---------------------------------------------------------------------------
+##  rmdir only real directories
+##
+
+compctl -g '*(/)' + -g '.*(-/)' rmdir dircmp
+
+## ---------------------------------------------------------------- cd / pushd
+##  cd/pushd only directories or symbolic links to directories
+##
+
+##  compctl -g '*(-/)' cd pushd
+
+if [[ ! $ZSH_VERSION < '3.0.0' ]] ; then
+    if [[ -o AUTO_REMOVE_SLASH  ]] then
+	compctl  -g '*(-/)' + -g '.*(-/)' + -U -K multicomp -q -S '/' cd pushd
+    else
+	compctl  -g '*(-/)' + -g '.*(-/)' + -U -K multicomp -S '/' cd pushd
+    fi
+fi
+
+## ---------------------------------------------------------------------------
+##  Another possibility for cd/pushd is to use it in conjunction with the
+##  cdmatch function (in the Functions subdirectory of zsh distribution).
+##
+## autoload cdmatch cdmatch2
+##
+## if [[ -o AUTO_REMOVE_SLASH ]] then
+##    compctl -x 'p[2]' -Q -K cdmatch2 - 'S[/][~][./][../]' -g '*(-/)' + \
+##	-g '*(-/D)' - 'n[-1,/], s[]' -K cdmatch -q -S '/' -- cd pushd
+## else
+##     compctl -x 'p[2]' -Q -K cdmatch2 - 'S[/][~][./][../]' -g '*(-/)' + \
+## 	-g '*(-/D)' - 'n[-1,/], s[]' -K cdmatch -S '/' -- cd pushd
+## fi
+
+## ----------------------------------------------------------------------- rsh
+##  If the command is rsh, make the first argument complete to hosts and treat
+##  the rest of the line as a command on its own.
+##
+
+compctl -K completehosts -x 'p[2,-1]' -l '' -- rsh ssh
+
+## -------------------------------------------------------------------- rlogin
+##  rlogin takes hosts and users after `-l'
+##
+
+compctl -K completehosts -x 'c[-1,-l]' -u -- rlogin
+
+## ----------------------------------------------------------------------- rcp
+## match files *and* hosts initially, match files after a :, if the first
+## argument contained a : then the second matches files and vice versa.
+##
+
+compctl -f -K completehosts -x 'n[1,:]' -f - \
+	'p[1] W[2,*:*]' -f - 'p[1]' -K completehosts -S ':' - \
+	'p[2] W[1,*:*]' -f - 'p[2]' -K completehosts -S ':' -- rcp
+
+## ---------------------------------------------------------------------------
+##  strip, profile, and debug only executables.  The compctls for the
+##  debuggers could be better, of course.
+##
+
+compctl -g '*(*)' strip gprof adb dbx xdbx ups
+
+## ------------------------------------------------------------------------ su
+##  su takes an username and args for the shell.  The `-c' case is handled
+##  specially here.
+##
+
+compctl -u -x 'w[2,-c] p[3,-1]' -l '' -- su
+
+## ---------------------------------------------------------------------------
+##  Run ghostscript on postscript files, but if no postscript file matches
+##  what we already typed, complete directories as the postscript file may not
+##  be in the current directory.
+##
+
+compctl -g '*.(e|)ps' + -g '*(-/)' gs ghostview psps pstops psmulti psselect
+
+## ----------------------------------------------------------------------- tex
+##  Similar things for tex, texinfo and dvi files.
+##
+
+compctl -g '*.tex*' + -g '*(-/)' {,la,gla,ams{la,},{g,}sli}tex texi2dvi
+compctl -g '*.dvi' + -g '*(-/)' xdvi dvips
+
+## ----------------------------------------------------------------------- rcs
+##  For rcs users, co and rlog from the RCS directory.  We don't want to see
+##  the RCS and ,v though.
+##
+
+compctl -g 'RCS/*(:s@RCS/@@:s/,v//)' co rlog rcs rcsdiff
+
+## ---------------------------------------------------------------------- gzip
+##  gzip files, but gzip -d only gzipped or compressed files
+##
+
+compctl -x 'R[-*[dt],^*]' -g '*.(gz|z|Z|t[agp]z|tarZ|tz)' + -g '*(-/)' + -f - \
+    's[]' -g '^*(.(tz|gz|t[agp]z|tarZ|zip|ZIP|jpg|JPG|gif|GIF|[zZ])|[~#])' \
+    + -f -- gzip
+compctl -g '*.(gz|z|Z|t[agp]z|tarZ|tz)' + -g '*(-/)' gunzip zcat
+						# zcat if you use GNU
+compctl -g '*.Z' + -g '*(-/)' uncompress zmore	# zcat if you don't use GNU
+compctl -g '*.F' + -g '*(-/)' melt fcat
+
+## ----------------------------------------------------------------------- net
+
+compctl -K completehosts ftp ping traceroute
+
+##
+##  Some systems have directories containing indices of ftp servers.
+##  For example: we have the directory /home/ftp/index/INDEX containing
+##  files of the form `<name>-INDEX.Z', this leads to:
+##
+##  compctl -g '/home/ftp/index/INDEX/*-INDEX.Z(:t:r:s/-INDEX//)' ftp tftp
+##
+
+## ---------------------------------------------------------------------- find
+##  Find is very system dependent, this one is for GNU find.
+##  Note that 'r[-exec,;]' must come first
+##  On Linux use 'c[-1,-fstype]' -s '$(cut -f2 /proc/filesystems)' 
+##
+
+compctl -x 'r[-exec,;][-ok,;]' -l '' - \
+	's[-]' -s 'daystart {max,min,}depth follow noleaf version xdev \
+	{a,c,}newer {a,c,m}{min,time} empty false {fs,x,}type gid inum links \
+	{i,}{l,}name {no,}{user,group} path perm regex size true uid used \
+	exec {f,}print{f,0,} ok prune ls' - \
+	'p[1]' -g '. .. *(-/)' - \
+	'C[-1,-((a|c|)newer|fprint(|0|f))]' -f - \
+	'c[-1,-fstype]' -k '(ufs 4.2 4.3 nfs tmp mfs S51K S52K)' - \
+	'c[-1,-group]' -K completegroups - \
+	'c[-1,-user]' -u -- find
+
+## ------------------------------------------------------------------------ cc
+##  generic completion for C compiler
+##
+
+compctl -g "*.[cCoa]" -x 's[-I]' -g "*(/)" - \
+	's[-l]' -s '${(s.:.)^LD_LIBRARY_PATH}/lib*.a(:t:r:s/lib//)' -- cc
+
+## ----------------------------------------------------------------------- gcc
+##  GCC completion, by Andrew Main
+##  completes to filenames (*.c, *.C, *.o, etc.); to miscellaneous options
+##  after a -; to various -f options after -f (and similarly -W, -g and -m);
+##  and to a couple of other things at different points.
+##  The -l completion is nicked from the cc compctl above.
+##  The -m completion should be tailored to each system; the one below is i386.
+##
+
+compctl -g '*.([cCmisSoa]|cc|cxx|ii)' -x \
+	's[-l]' -s '${(s.:.)^LD_LIBRARY_PATH}/lib*.a(:t:r:s/lib//)' - \
+	'c[-1,-x]' -k '(none c objective-c c-header c++ cpp-output assembler assembler-with-cpp)' - \
+	'c[-1,-o]' -f - \
+	'C[-1,-i(nclude|macros)]' -g '*.h' - \
+	'C[-1,-i(dirafter|prefix)]' -g '*(-/)' - \
+	's[-B][-I][-L]' -g '*(-/)' - \
+	's[-fno-],s[-f]' -k '(all-virtual cond-mismatch dollars-in-identifiers enum-int-equiv external-templates asm builtin strict-prototype signed-bitfields signd-char this-is-variable unsigned-bitfields unsigned-char writable-strings syntax-only pretend-float caller-saves cse-follow-jumps cse-skip-blocks delayed-branch elide-constructors expensive-optimizations fast-math float-store force-addr force-mem inline-functions keep-inline-functions memoize-lookups default-inline defer-pop function-cse inline peephole omit-frame-pointer rerun-cse-after-loop schedule-insns schedule-insns2 strength-reduce thread-jumps unroll-all-loops unroll-loops)' - \
+	's[-g]' -k '(coff xcoff xcoff+ dwarf dwarf+ stabs stabs+ gdb)' - \
+	's[-mno-][-mno][-m]' -k '(486 soft-float fp-ret-in-387)' - \
+	's[-Wno-][-W]' -k '(all aggregate-return cast-align cast-qual char-subscript comment conversion enum-clash error format id-clash-6 implicit inline missing-prototypes missing-declarations nested-externs import parentheses pointer-arith redundant-decls return-type shadow strict-prototypes switch template-debugging traditional trigraphs uninitialized unused write-strings)' - \
+	's[-]' -k '(pipe ansi traditional traditional-cpp trigraphs pedantic pedantic-errors nostartfiles nostdlib static shared symbolic include imacros idirafter iprefix iwithprefix nostdinc nostdinc++ undef)' -X 'Use "-f", "-g", "-m" or "-W" for more options' -- gcc g++
+
+## ----------------------------------------------------------------------- man
+## There are (at least) two ways to complete manual pages.  This one is
+## extremely memory expensive if you have lots of man pages
+##
+
+man_var() {
+   man_pages=( ${^manpath}/man*/*(N:t:r) )
+   compctl -k man_pages man
+   reply=( $man_pages )
+}
+
+##
+##  This one isn't that expensive but somewhat slower
+##
+
+man_glob () {
+   local a
+   read -cA a
+   if [[ $a[2] = -s ]] then         # Or [[ $a[2] = [0-9]* ]] for BSD
+     reply=( ${^manpath}/man$a[3]/$1*$2(N:t:r) )
+   else
+     reply=( ${^manpath}/man*/$1*$2(N:t:r) )
+   fi
+}
+
+compctl -K man_glob man
+
+## ------------------------------------------------------------------ xsetroot
+##  xsetroot: gets possible colours, cursors and bitmaps from wherever.
+##  Uses two auxiliary functions.  You might need to change the path names.
+##  The =:- can be omitted if you use a beta6-hzoli4 or later version.
+##
+
+Xcolours() {
+  reply=( ${(L)=:-$(awk '{ if (NF = 4) print $4 }' < /usr/openwin/lib/X11/rgb.txt)} )
+}
+
+Xcursor() {
+  reply=( $(sed -n 's/^#define[	 ][ 	]*XC_\([^ 	]*\)[ 	].*$/\1/p' \
+	  < /usr/include/X11/cursorfont.h) )
+}
+
+compctl -k '(-help -def -display -cursor -cursor_name -bitmap -mod -fg -bg
+   -grey -rv -solid -name)' -x 'c[-1,-display]' -K completehosts -S ':0.0' - \
+   'c[-1,-cursor]' -f -  'c[-2,-cursor]' -f - \
+   'c[-1,-bitmap]' -g '/usr/include/X11/bitmaps/*' - \
+   'c[-1,-cursor_name]' -K Xcursor - \
+   'C[-1,-(solid|fg|bg)]' -K Xcolours -- xsetroot
+
+#-------------------------------------------------------------------------- dd
+compctl -k '(if of conv ibs obs bs cbs files skip file seek count)' \
+	-S '=' -x 's[if=], s[of=]' -f - 'C[0,conv=*,*] n[-1,,], s[conv=]' \
+	-k '(ascii ebcdic ibm block unblock lcase ucase swap noerror sync)' \
+	-q -S ',' - 'n[-1,=]' -X '<number>'  -- dd
+
+fi
+
+## ------------------------------------------------- parse site-specific setup
+[[ -r $CG_ZSH_DIR/site/zshrc ]] && source $CG_ZSH_DIR/site/zshrc
+## ---------------------------------------------------------------------------
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "## end   'zshrc'"
+## ===========================================================================

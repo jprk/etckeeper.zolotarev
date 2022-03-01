@@ -1,0 +1,21 @@
+#
+# SSLeay example configuration file.
+#
+
+RANDFILE                = /dev/urandom
+
+[ req ]
+default_bits            = 1024
+default_keyfile         = privkey.pem
+distinguished_name      = req_distinguished_name
+prompt                  = no
+policy			= policy_anything
+
+[ req_distinguished_name ]
+countryName		= CZ
+stateOrProvinceName	= Prague
+localityName		= Prague
+0.organizationName	= Czech Technical University
+organizationalUnitName	= Department of Applied Mathematics
+emailAddress		= root@@HostName@
+commonName		= @HostName@

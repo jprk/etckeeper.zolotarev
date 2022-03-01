@@ -1,0 +1,224 @@
+## ===========================================================================
+##  This file is remotely maintained.  Changes to this copy are void.
+## ===========================================================================
+##  NAME:       /etc/zshenv
+##  TYPE:       zsh script
+##  PROJECT:    zsh
+##  CONTENT:    setup for all shells
+## ===========================================================================
+##  AUTHORS:    rft     Robert F. Tobler
+## ===========================================================================
+##  HISTORY:
+##
+##  02-Oct-98 20:34:50  rft     irix 6.x adaptations
+##  24-Oct-96 11:28:02  rft     split global and user environment
+##  18-Jul-96 12:59:19  rft     added REMOTELOGIN detection
+##  02-Apr-96 16:59:32  rft     created this file
+## ===========================================================================
+##  DESCRIPTION
+##      '/etc/zshenv' is sourced on all invocations of the shell, unless the
+##      -f option is set.  It is sourced before '~/.zshenv'.  Both these
+##      files should contain commands to set the command search path, plus
+##      other important environment variables.  They should not contain
+##      commands that produce output or assume the shell is attached to a
+##      tty.
+## ===========================================================================
+## uncomment the following line to enable debugging of all setup files
+## CG_ZSH_DEBUG=yes
+## ---------------------------------------------------------------------------
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "## begin 'zshenv'"
+## ---------------------------------------------------------------------------
+
+CG_ZSH_DIR=/etc/zsh
+
+## ---------------------------------------------------------------- setup path
+
+p_user=()
+
+if [[ $OSTYPE == 'linux-gnu' ]] ; then
+    OSTYPE=linux
+fi
+
+p_local=()
+p_world=()
+p_system=()
+p_root=()
+p_gui=()
+
+if [[ $OSTYPE == 'linux' ]] ; then
+    p_local=(/usr/local/sbin)
+    p_world=(/usr/bin /bin)
+    p_system=(/usr/sbin /sbin)
+    p_root=(/root/bin)
+    test -d /usr/openwin/bin	&& p_gui=($p_gui /usr/openwin/bin)
+    test -d /usr/games/bin	&& p_gui=($p_gui /usr/games/bin)
+    test -d /usr/games		&& p_gui=($p_gui /usr/games)
+    test -d /opt/gnome/bin	&& p_gui=($p_gui /opt/gnome/bin)
+    if [ -d /opt/kde2/bin ] ; then
+	p_gui=($p_gui /opt/kde2/bin)
+    else
+    	test -d /opt/kde/bin	&& p_gui=($p_gui /opt/kde/bin)
+    fi
+fi
+
+if [[ $VENDOR == apple ]] ; then
+    p_world=(/usr/bin /bin)
+    p_system=(/Developer/Tools /usr/sbin /sbin)
+    export MANPATH=/usr/local/man:/usr/share/man
+    export MANPAGER='less -M'
+fi
+
+if [[ $OSTYPE == nextstep3 ]] ; then
+    p_world=(/usr/bin /bin /usr/etc /etc)
+    p_system=(/usr/ucb)
+    p_gui=(~/Apps /LocalApps /NextApps /NextAdmin /NextDeveloper/Demos)
+    export MANPATH=/usr/local/man:/usr/man
+fi
+
+if [[ $VENDOR == sgi ]] ; then
+    p_world=(/usr/bin /bin /usr/etc)	## /usr/etc needed by ssh-keygen
+    p_system=(/usr/bsd /usr/sbin /sbin)
+    p_root=(/etc)
+    p_gui=(/usr/bin/X11)
+fi
+
+##
+## TODO: following VENDOR names are untried!
+##
+
+if [[ $VENDOR == 'decstation' ]] ; then
+    p_world=(/usr/bin /bin)
+    p_system=(/usr/ucb)
+    p_root=(/etc)
+fi
+
+if [[ $VENDOR == 'sun4' ]] ; then
+    p_world=(/usr/bin /bin /usr/etc/bin)
+    p_system=(/usr/ucb)
+    p_root=(/etc)
+fi
+
+## ------------------------------------------------------ common path elements
+
+test -d /usr/local/bin && p_local=(/usr/local/bin $p_local)
+test -d /usr/X11R6/bin && p_gui=($p_gui /usr/X11R6/bin)
+## --------------------------------------------------------------- create path
+
+test -d ~/bin	&& p_user=(~/bin $p_user)
+test -d ~/unix	&& HOME_UNIX=~/unix
+test -d ~/Unix	&& HOME_UNIX=~/Unix
+
+if [[ ${+HOME_UNIX} == 1 ]] ; then
+    test -d $HOME_UNIX/bin	&& p_user=($HOME_UNIX/bin $p_user)
+    test -d $HOME_UNIX/perl	&& p_user=($HOME_UNIX/perl $p_user)
+    test -d $HOME_UNIX/python	&& p_user=($HOME_UNIX/python $p_user)
+    export HOME_UNIX
+fi
+
+
+umask 022
+
+
+## ------------------------------------------------------------- gnu utilities
+
+if [[ $OSTYPE == irix6.2 ]] ; then
+    [[ -x /usr/freeware/bin/gmake ]] && GNUMAKE=/usr/freeware/bin/gmake
+    [[ -x /usr/freeware/bin/tar ]] && GNUTAR=/usr/freeware/bin/tar
+fi
+
+if [[ $OSTYPE == nextstep3 || $OSTYPE = rhapsody5.2 ]] ; then
+    [[ -x /usr/local/bin/gnumake ]] && GNUMAKE=/usr/local/bin/gnumake
+    GNUTAR=/usr/bin/gnutar
+fi
+
+if [[ $OSTYPE == linux ]] ; then
+    GNUMAKE=make
+    GNUTAR=tar
+fi
+
+if [[ $VENDOR == apple ]] ; then
+    GNUMAKE=/usr/bin/gnumake
+    GNUTAR=/usr/bin/gnutar
+fi
+
+export GNUMAKE
+export GNUTAR
+
+## -------------------------------------------------------- remote shell setup
+
+export REMOTELOGIN=0
+
+if [[ $OSTYPE == nextstep3 ]] ; then
+    [[ $TERM_PROGRAM != NeXT_Terminal ]] && export REMOTELOGIN=1
+fi
+
+if [[ $VENDOR == apple ]] ; then
+    if [[ $TERM_PROGRAM != Apple_Terminal ]] ; then
+        export REMOTELOGIN=1
+    else
+        export DISPLAY=:0.0
+    fi
+fi
+
+if [[ $VENDOR == sgi ]] ; then
+    [[ ${+REMOTEHOST} == 1 ]] && export REMOTELOGIN=1 
+fi
+
+if [[ $OSTYPE == linux ]] ; then
+    [[ ${+WINDOWID} == 0 ]] && export REMOTELOGIN=1 
+fi
+
+if [[ ${+SSH_CLIENT} == 1 ]] ; then
+    export REMOTEADDRESS=`echo $SSH_CLIENT|cut -d ' ' -f 1`
+    export REMOTELOGIN=1
+    export TERM_SETTITLE=1
+fi
+
+export TERM_SETTITLE_BEGIN="]0;"
+export TERM_SETTITLE_END=""
+
+case "$TERM" in
+    vt100)
+	if [[ $REMOTELOGIN == 0 ]] ; then
+	    [[ $VENDOR == apple ]] && export TERM_SETTITLE=1
+	fi 
+	;;
+    xterm*)
+	export TERM_SETTITLE=1
+	;;
+esac
+
+export HOST_WITHOUT_DOMAIN=`echo $HOST|sed -e 's/\..*//'`
+
+## --------------------------------------------------------- irix display hack
+
+if [[ $VENDOR == sgi && ${+DISPLAY} == 0 && \
+    ($TERM == xterm || \
+     $TERM == iris-ansi || \
+     $TERM == iris-ansi-net) ]] ; then
+    export DISPLAY=":0"
+    [[ ${+REMOTEHOST} == 1 ]] && export DISPLAY="${REMOTEHOST}:0"
+    [[ ${+REMOTEADDRESS} == 1 ]] && export DISPLAY="${REMOTEADDRESS}:0"
+fi
+
+## --------------------------------------------------------- other config vars
+
+export ZIPOPT='-n .Z:.zip:.arc:.arj:.gz:.gif:.jpg:.lzh:.taz:.tgz:.zoo'
+
+## ------------------------------------------------- parse site-specific setup
+[[ -r $CG_ZSH_DIR/site/zshenv ]] && source $CG_ZSH_DIR/site/zshenv
+## ---------------------------------------------------------------------------
+
+if [[ $UID == '0' ]] ; then
+    path=($p_user $p_local $p_world $p_system $p_root $p_gui)
+else
+    path=($p_user $p_local $p_world $p_system $p_gui)
+fi
+
+unset -m 'p_*'
+
+[[ -r /sw/bin/init.sh ]] && . /sw/bin/init.sh
+
+## ---------------------------------------------------------------------------
+[[ ${+CG_ZSH_DEBUG} == 1 ]] && echo "## end   'zshenv'"
+## ===========================================================================
