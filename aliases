@@ -11,4 +11,7 @@ ftp: root
 abuse: root
 noc: root
 security: root
-root: uzivatel
+sysadm: root
+www-data: sysadm
+
+
