@@ -15,6 +15,7 @@
 
   # .ICEauthority files required for X authentication, per user
   owner @{HOME}/.ICEauthority r,
+  owner @{run}/user/*/ICEauthority r,
 
   # .Xauthority files required for X connections, per user
   owner @{HOME}/.Xauthority r,
@@ -24,6 +25,7 @@
   owner /{,var/}run/lightdm/*/xauthority r,
   owner /{,var/}run/user/*/gdm/Xauthority r,
   owner /{,var/}run/user/*/X11/Xauthority r,
+  owner /{,var/}run/user/*/xauth_* r,
 
   # the unix socket to use to connect to the display
   /tmp/.X11-unix/* rw,
@@ -48,7 +50,13 @@
 
   # Xcompose
   owner @{HOME}/.XCompose         r,
+  /var/cache/libx11/compose/*     r,
+  deny /var/cache/libx11/compose/* wlk,
 
   # mouse themes
   /etc/X11/cursors/               r,
   /etc/X11/cursors/**             r,
+
+  # Xwayland
+  owner /run/user/*/.mutter-Xwaylandauth.* r,
+

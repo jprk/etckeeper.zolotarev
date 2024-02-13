@@ -23,6 +23,10 @@
   /dev/log                       w,
   /dev/random                    r,
   /dev/urandom                   r,
+  # Allow access to the uuidd daemon (this daemon is a thin wrapper around
+  # time and getrandom()/{,u}random and, when available, runs under an
+  # unprivilged, dedicated user).
+  /run/uuidd/request             r,
   /etc/locale/**                 r,
   /etc/locale.alias              r,
   /etc/localtime                 r,
@@ -156,7 +160,9 @@
   # prevents access to the files from processes running under a different uid.
 
   # encrypted ~/.Private and old-style encrypted $HOME
+  owner @{HOME}/.Private/ r,
   owner @{HOME}/.Private/** mrixwlk,
   # new-style encrypted $HOME
+  owner @{HOMEDIRS}/.ecryptfs/*/.Private/ r,
   owner @{HOMEDIRS}/.ecryptfs/*/.Private/** mrixwlk,
 

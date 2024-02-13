@@ -1,6 +1,6 @@
 ;; File: startup.el.in
 ;; Description: Emacsen startup for dictionaries-common in Debian
-;; Authors: Rafael Laboissière <rafael@debian.org>
+;; Authors: Rafael LaboissiÃ¨re <rafael@debian.org>
 ;;          Agustin Martin     <agmartin@debian.org>
 ;; Created on: Fri Oct 22 09:48:21 CEST 1999
 
