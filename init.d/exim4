@@ -95,13 +95,13 @@ start_exim()
     separate)
       start_daemon -p "$PIDFILE" \
         "$DAEMON" -bd \
-        ${COMMONOPTIONS} \
+        ${COMMONOPTIONS} -oY \
         ${SMTPLISTENEROPTIONS}
       log_progress_msg "exim4_listener"
       start_daemon -p "$QRPIDFILE" \
         "$DAEMON" -oP $QRPIDFILE \
         "-q${QFLAGS}${QUEUEINTERVAL}" \
-        ${COMMONOPTIONS} \
+        ${COMMONOPTIONS} -oY \
         ${QUEUERUNNEROPTIONS}
       log_progress_msg "exim4_queuerunner"
       ;;

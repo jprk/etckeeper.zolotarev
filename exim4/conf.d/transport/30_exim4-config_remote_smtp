@@ -24,6 +24,9 @@ remote_smtp:
 .ifdef REMOTE_SMTP_HELO_DATA
   helo_data=REMOTE_SMTP_HELO_DATA
 .endif
+.ifdef REMOTE_SMTP_INTERFACE
+  interface = REMOTE_SMTP_INTERFACE
+.endif
 .ifdef DKIM_DOMAIN
 dkim_domain = DKIM_DOMAIN
 .endif
@@ -42,6 +45,9 @@ dkim_strict = DKIM_STRICT
 .ifdef DKIM_SIGN_HEADERS
 dkim_sign_headers = DKIM_SIGN_HEADERS
 .endif
+.ifdef DKIM_TIMESTAMPS
+dkim_timestamps = DKIM_TIMESTAMPS
+.endif
 .ifdef TLS_DH_MIN_BITS
 tls_dh_min_bits = TLS_DH_MIN_BITS
 .endif
@@ -51,7 +57,9 @@ tls_certificate = REMOTE_SMTP_TLS_CERTIFICATE
 .ifdef REMOTE_SMTP_PRIVATEKEY
 tls_privatekey = REMOTE_SMTP_PRIVATEKEY
 .endif
-.ifndef REMOTE_SMTP_DISABLE_DANE
-dnssec_request_domains = *
-hosts_try_dane = *
+.ifdef REMOTE_SMTP_HOSTS_REQUIRE_TLS
+  hosts_require_tls = REMOTE_SMTP_HOSTS_REQUIRE_TLS
+.endif
+.ifdef REMOTE_SMTP_TRANSPORTS_HEADERS_REMOVE
+  headers_remove = REMOTE_SMTP_TRANSPORTS_HEADERS_REMOVE
 .endif

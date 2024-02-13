@@ -140,13 +140,13 @@
 
 # This is now the (working!) example from
 # http://www.exim.org/eximwiki/FAQ/Policy_controls/Q0730
-# Possible pitfall: access rights on /var/run/courier/authdaemon/socket.
+# Possible pitfall: access rights on /run/courier/authdaemon/socket.
 # plain_courier_authdaemon:
 #   driver = plaintext
 #   public_name = PLAIN
 #   server_condition = \
 #     ${extract {ADDRESS} \
-#               {${readsocket{/var/run/courier/authdaemon/socket} \
+#               {${readsocket{/run/courier/authdaemon/socket} \
 #               {AUTH ${strlen:exim\nlogin\n$auth2\n$auth3\n}\nexim\nlogin\n$auth2\n$auth3\n} }} \
 #               {yes} \
 #               fail}
@@ -161,7 +161,7 @@
 #   server_prompts = Username:: : Password::
 #   server_condition = \
 #     ${extract {ADDRESS} \
-#               {${readsocket{/var/run/courier/authdaemon/socket} \
+#               {${readsocket{/run/courier/authdaemon/socket} \
 #               {AUTH ${strlen:exim\nlogin\n$auth1\n$auth2\n}\nexim\nlogin\n$auth1\n$auth2\n} }} \
 #               {yes} \
 #               fail}
