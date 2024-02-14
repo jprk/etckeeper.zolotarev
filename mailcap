@@ -35,6 +35,23 @@ application/x-troff-man; /usr/bin/nroff -mandoc -Tutf8; copiousoutput; print=/us
 text/troff; /usr/bin/nroff -mandoc -Tutf8; copiousoutput; print=/usr/bin/nroff -mandoc -Tutf8 | print text/plain:-
 application/x-dvi; /usr/bin/xdvi %s; description=TeX DVI; test=test -n "$DISPLAY"; nametemplate=%s.dvi
 text/plain; more %s; needsterminal
+x-scheme-handler/mailto; emacs -f message-mailto %s; test=test -n "$DISPLAY"
+x-scheme-handler/mailto; bash -c "u=\\${1//\\\\\\\\/\\\\\\\\\\\\\\\\}; u=\\${u//\\\\\\"/\\\\\\\\\\\\\\"}; exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" --eval \\"(message-mailto \\\\\\"\\$u\\\\\\")\\"" bash %s; test=test -n "$DISPLAY"
+text/english; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/plain; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-makefile; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c++hdr; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c++src; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-chdr; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-csrc; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-java; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-moc; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-pascal; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-tcl; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-tex; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+application/x-shellscript; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c++; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
 application/pkcs12; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 application/pkcs12+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 application/pkcs7-mime; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
