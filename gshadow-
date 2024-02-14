@@ -54,3 +54,5 @@ Debian-exim:!::
 kvm:!::
 render:!::
 systemd-coredump:!!::
+ftp:!::
+sgx:!::

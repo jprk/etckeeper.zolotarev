@@ -35,6 +35,26 @@ application/x-troff-man; /usr/bin/nroff -mandoc -Tutf8; copiousoutput; print=/us
 text/troff; /usr/bin/nroff -mandoc -Tutf8; copiousoutput; print=/usr/bin/nroff -mandoc -Tutf8 | print text/plain:-
 application/x-dvi; /usr/bin/xdvi %s; description=TeX DVI; test=test -n "$DISPLAY"; nametemplate=%s.dvi
 text/plain; more %s; needsterminal
+application/pkcs12; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkcs12+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkcs7-mime; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkcs7-mime+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkcs8; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkcs8+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkix-cert; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkix-cert+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkix-crl; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkix-crl+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/x-pem-file; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/x-pem-key; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/x-pkcs12; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/x-pkcs7-certificates; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/x-x509-ca-cert; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/x-x509-user-cert; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkcs10; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/pkcs10+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/x-spkac; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
+application/x-spkac+base64; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 text/english; vim %s; needsterminal
 text/plain; vim %s; needsterminal
 text/x-makefile; vim %s; needsterminal

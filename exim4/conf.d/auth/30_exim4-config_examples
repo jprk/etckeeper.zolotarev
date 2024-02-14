@@ -191,6 +191,34 @@
 #   server_advertise_condition = ${if eq{$tls_in_cipher}{}{}{*}}
 #   .endif
 
+# Use dovecot as authentication backend
+# Requires changes to dovecot configuration:
+# 8X---------------------
+# --- /etc/dovecot/conf.d/10-master.conf    2020-12-22 13:26:52.000000000 +0000
+# +++ /etc/dovecot/conf.d/10-master.conf 2022-07-13 11:17:02.479100984 +0000
+# @@ -108,6 +108,14 @@
+#    #  mode = 0666
+#    #}
+#
+# +### SASL listener for exim start
+# +  # SASL exim
+# +  unix_listener /var/spool/exim4/dovecot.auth-client {
+# +     mode = 0660
+# +     group = Debian-exim
+# +  }
+# +### SASL listener for exim end
+# +
+#    # Auth process is run as this user.
+#    #user = $default_internal_user
+#  }
+# 8X---------------------
+#
+# dovecot_plain_server:
+#   driver = dovecot
+#   public_name = PLAIN
+#   server_socket = /var/spool/exim4/dovecot.auth-client
+#   server_set_id = $auth1
+
 ##############
 # See /usr/share/doc/exim4-base/README.Debian.gz
 ##############

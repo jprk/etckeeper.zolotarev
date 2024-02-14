@@ -67,3 +67,5 @@ Debian-exim:x:113:
 kvm:x:114:
 render:x:115:
 systemd-coredump:x:999:
+ftp:x:105:
+sgx:x:116:

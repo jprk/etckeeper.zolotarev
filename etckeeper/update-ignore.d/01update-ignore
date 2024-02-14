@@ -103,8 +103,16 @@ writefile () {
 		comment "new versions of conffiles, stored by apk"
 		ignore "*.apk-new"
 		nl
+	elif [ "$LOWLEVEL_PACKAGE_MANAGER" = "xbps" ]; then
+		comment "new versions of conffiles, stored by xbps"
+		ignore "*.new-*_[0-9]*"
+		nl
+	elif [ "$LOWLEVEL_PACKAGE_MANAGER" = "qlist" -o "$LOWLEVEL_PACKAGE_MANAGER" = "cave" ]; then
+		comment "new and old versions of conffiles, stored by emerge"
+		ignore "._cfg*"
+		nl
 	fi
-	
+
 	comment "old versions of files"
 	ignore "*.old"
 	# Not currently ignored as admins tend to rely on these files.
@@ -129,6 +137,7 @@ writefile () {
 	ignore "*.LOCK"
 	ignore network/run
 	ignore adjtime
+	ignore udev/hwdb.bin
 	ignore lvm/cache
 	ignore lvm/archive
 	ignore "X11/xdm/authdir/authfiles/*"

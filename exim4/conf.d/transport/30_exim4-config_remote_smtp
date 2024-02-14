@@ -1,17 +1,10 @@
-
 ### transport/30_exim4-config_remote_smtp
 #################################
 # This transport is used for delivering messages over SMTP connections.
-# Refuse to send any message with over-long lines, which could have
-# been received other than via SMTP. The use of message_size_limit to
-# enforce this is a red herring.
 
 remote_smtp:
   debug_print = "T: remote_smtp for $local_part@$domain"
   driver = smtp
-.ifndef IGNORE_SMTP_LINE_LENGTH_LIMIT
-  message_size_limit = ${if > {$max_received_linelength}{998} {1}{0}}
-.endif
 .ifdef REMOTE_SMTP_HOSTS_AVOID_TLS
   hosts_avoid_tls = REMOTE_SMTP_HOSTS_AVOID_TLS
 .endif
@@ -29,6 +22,9 @@ remote_smtp:
 .endif
 .ifdef DKIM_DOMAIN
 dkim_domain = DKIM_DOMAIN
+.endif
+.ifdef DKIM_IDENTITY
+dkim_identity = DKIM_IDENTITY
 .endif
 .ifdef DKIM_SELECTOR
 dkim_selector = DKIM_SELECTOR
@@ -62,4 +58,8 @@ tls_privatekey = REMOTE_SMTP_PRIVATEKEY
 .endif
 .ifdef REMOTE_SMTP_TRANSPORTS_HEADERS_REMOVE
   headers_remove = REMOTE_SMTP_TRANSPORTS_HEADERS_REMOVE
+.endif
+.ifdef IGNORE_SMTP_LINE_LENGTH_LIMIT
+# If overlong mails are accepted on incoming mail send them out, too.
+  message_linelength_limit = 1G
 .endif

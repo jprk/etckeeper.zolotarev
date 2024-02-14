@@ -45,7 +45,6 @@ input:x:106:
 crontab:x:107:
 netdev:x:108:uzivatel
 messagebus:x:109:
-ssh:x:110:
 uzivatel:x:1000:
 ssl-cert:x:111:
 mysql:x:112:
@@ -68,3 +67,5 @@ kvm:x:114:
 render:x:115:
 systemd-coredump:x:999:
 ftp:x:105:
+sgx:x:116:
+_ssh:x:110:

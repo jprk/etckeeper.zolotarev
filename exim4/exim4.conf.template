@@ -713,12 +713,6 @@ acl_check_rcpt:
     control = submission/sender_retain
     control = dkim_disable_verify
 
-  # Insist that a HELO/EHLO was accepted.
-
-  require 
-    condition	= ${if def:sender_helo_name}
-    message	= nice hosts say HELO first
-
   # Insist that any other recipient address that we accept is either in one of
   # our local domains, or is in a domain for which we explicitly allow
   # relaying. Any other domain is rejected as being unacceptable for relaying.
@@ -796,46 +790,24 @@ acl_check_rcpt:
   .endif
 
 
-  # Use spfquery to perform a pair of SPF checks.
-  #
-  # This is quite costly in terms of DNS lookups (~6 lookups per mail).  Do not
-  # enable if that's an issue.  Also note that if you enable this, you must
-  # install "spf-tools-perl" which provides the spfquery command.
-  # Missing spf-tools-perl will trigger the "Unexpected error in
-  # SPF check" warning.
   .ifdef CHECK_RCPT_SPF
+  .ifdef _HAVE_SPF
   deny
     !acl = acl_local_deny_exceptions
-    condition = ${run{/usr/bin/spfquery.mail-spf-perl --ip \
-                   ${quote:$sender_host_address} --identity \
-                   ${if def:sender_address_domain \
-                       {--scope mfrom  --identity ${quote:$sender_address}}\
-                       {--scope helo --identity ${quote:$sender_helo_name}}}}\
-                   {no}{${if eq {$runrc}{1}{yes}{no}}}}
+    spf = fail
     message = [SPF] $sender_host_address is not allowed to send mail from \
               ${if def:sender_address_domain {$sender_address_domain}{$sender_helo_name}}.
     log_message = SPF check failed.
 
   defer
     !acl = acl_local_deny_exceptions
-    condition = ${if eq {$runrc}{5}{yes}{no}}
+    spf = temperror
     message = Temporary DNS error while checking SPF record.  Try again later.
 
   warn
-    condition = ${if <={$runrc}{6}{yes}{no}}
-    add_header = Received-SPF: ${if eq {$runrc}{0}{pass}\
-                                {${if eq {$runrc}{2}{softfail}\
-                                 {${if eq {$runrc}{3}{neutral}\
-				  {${if eq {$runrc}{4}{permerror}\
-				   {${if eq {$runrc}{6}{none}{error}}}}}}}}}\
-				} client-ip=$sender_host_address; \
-				${if def:sender_address_domain \
-				   {envelope-from=${sender_address}; }{}}\
-				helo=$sender_helo_name
-
-  warn
-    condition = ${if >{$runrc}{6}{yes}{no}}
-    log_message = Unexpected error in SPF check.
+    spf = pass:softfail:neutral:permerror
+    add_header = :at_start:$spf_received
+  .endif
   .endif
 
 
@@ -1660,20 +1632,13 @@ procmail_pipe:
 #####################################################
 ### transport/30_exim4-config_remote_smtp
 #####################################################
-
 ### transport/30_exim4-config_remote_smtp
 #################################
 # This transport is used for delivering messages over SMTP connections.
-# Refuse to send any message with over-long lines, which could have
-# been received other than via SMTP. The use of message_size_limit to
-# enforce this is a red herring.
 
 remote_smtp:
   debug_print = "T: remote_smtp for $local_part@$domain"
   driver = smtp
-.ifndef IGNORE_SMTP_LINE_LENGTH_LIMIT
-  message_size_limit = ${if > {$max_received_linelength}{998} {1}{0}}
-.endif
 .ifdef REMOTE_SMTP_HOSTS_AVOID_TLS
   hosts_avoid_tls = REMOTE_SMTP_HOSTS_AVOID_TLS
 .endif
@@ -1691,6 +1656,9 @@ remote_smtp:
 .endif
 .ifdef DKIM_DOMAIN
 dkim_domain = DKIM_DOMAIN
+.endif
+.ifdef DKIM_IDENTITY
+dkim_identity = DKIM_IDENTITY
 .endif
 .ifdef DKIM_SELECTOR
 dkim_selector = DKIM_SELECTOR
@@ -1725,6 +1693,10 @@ tls_privatekey = REMOTE_SMTP_PRIVATEKEY
 .ifdef REMOTE_SMTP_TRANSPORTS_HEADERS_REMOVE
   headers_remove = REMOTE_SMTP_TRANSPORTS_HEADERS_REMOVE
 .endif
+.ifdef IGNORE_SMTP_LINE_LENGTH_LIMIT
+# If overlong mails are accepted on incoming mail send them out, too.
+  message_linelength_limit = 1G
+.endif
 #####################################################
 ### end transport/30_exim4-config_remote_smtp
 #####################################################
@@ -1738,17 +1710,11 @@ tls_privatekey = REMOTE_SMTP_PRIVATEKEY
 # This transport is used for delivering messages over SMTP connections
 # to a smarthost. The local host tries to authenticate.
 # This transport is used for smarthost and satellite configurations.
-# Refuse to send any messsage with over-long lines, which could have
-# been received other than via SMTP. The use of message_size_limit to
-# enforce this is a red herring.
 
 remote_smtp_smarthost:
   debug_print = "T: remote_smtp_smarthost for $local_part@$domain"
   driver = smtp
   multi_domain
-.ifndef IGNORE_SMTP_LINE_LENGTH_LIMIT
-  message_size_limit = ${if > {$max_received_linelength}{998} {1}{0}}
-.endif
   hosts_try_auth = <; ${if exists{CONFDIR/passwd.client} \
         {\
         ${lookup{$host}nwildlsearch{CONFDIR/passwd.client}{$host_address}}\
@@ -1787,6 +1753,13 @@ tls_privatekey = REMOTE_SMTP_SMARTHOST_PRIVATEKEY
 .endif
 .ifdef REMOTE_SMTP_TRANSPORTS_HEADERS_REMOVE
   headers_remove = REMOTE_SMTP_TRANSPORTS_HEADERS_REMOVE
+.endif
+.ifdef IGNORE_SMTP_LINE_LENGTH_LIMIT
+# If overlong mails are accepted on incoming mail send them out, too.
+  message_linelength_limit = 1G
+.endif
+.ifdef REMOTE_SMTP_SMARTHOST_PROTOCOL
+  protocol = REMOTE_SMTP_SMARTHOST_PROTOCOL
 .endif
 #####################################################
 ### end transport/30_exim4-config_remote_smtp_smarthost
@@ -2093,6 +2066,34 @@ begin authenticators
 #   .ifndef AUTH_SERVER_ALLOW_NOTLS_PASSWORDS
 #   server_advertise_condition = ${if eq{$tls_in_cipher}{}{}{*}}
 #   .endif
+
+# Use dovecot as authentication backend
+# Requires changes to dovecot configuration:
+# 8X---------------------
+# --- /etc/dovecot/conf.d/10-master.conf    2020-12-22 13:26:52.000000000 +0000
+# +++ /etc/dovecot/conf.d/10-master.conf 2022-07-13 11:17:02.479100984 +0000
+# @@ -108,6 +108,14 @@
+#    #  mode = 0666
+#    #}
+#
+# +### SASL listener for exim start
+# +  # SASL exim
+# +  unix_listener /var/spool/exim4/dovecot.auth-client {
+# +     mode = 0660
+# +     group = Debian-exim
+# +  }
+# +### SASL listener for exim end
+# +
+#    # Auth process is run as this user.
+#    #user = $default_internal_user
+#  }
+# 8X---------------------
+#
+# dovecot_plain_server:
+#   driver = dovecot
+#   public_name = PLAIN
+#   server_socket = /var/spool/exim4/dovecot.auth-client
+#   server_set_id = $auth1
 
 ##############
 # See /usr/share/doc/exim4-base/README.Debian.gz
