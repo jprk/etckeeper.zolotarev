@@ -1,0 +1,14 @@
+/var/log/ulog/*.log /var/log/ulog/*.pcap {
+    missingok
+    compress
+    delaycompress
+    sharedscripts
+    create 640 ulog adm
+    postrotate
+	if [ -d /run/systemd/system ] && command systemctl >/dev/null 2>&1 && systemctl is-active --quiet ulogd2.service; then
+	    systemctl kill --kill-who main --signal=SIGHUP ulogd2.service
+	else
+	    invoke-rc.d ulogd2 reload > /dev/null
+	fi
+    endscript
+}

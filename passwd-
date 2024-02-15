@@ -14,7 +14,7 @@ proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
 www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
 backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
 list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
-irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
 gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
 nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
 systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
@@ -36,4 +36,7 @@ tdl:x:49001:49001::/home/tdl:/bin/zsh
 pdo:x:49002:49002::/home/pdo:/bin/zsh
 dopm:x:49003:49003::/home/dopm:/bin/zsh
 systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
-ftp:x:103:105::/srv/ftp:/usr/sbin/nologin
+ntpsec:x:103:105::/nonexistent:/usr/sbin/nologin
+uuidd:x:109:117::/run/uuidd:/usr/sbin/nologin
+ulog:x:110:118::/var/log/ulog:/bin/false
+avahi:x:111:119:Avahi mDNS daemon,,,:/run/avahi-daemon:/usr/sbin/nologin

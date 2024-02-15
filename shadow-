@@ -32,4 +32,9 @@ prikryl:$6$ovX0GokB$u2.IBW0QNqEqFecB4tQGK.ikFALmxZ1krlPf9R07iiCWz7m45vbyu8DWIEJW
 vitu:$1$4WomlPX2$xPvHdgZxsjJQxVSRbPPRs1:13837:0:99999:7:::
 Debian-exim:!:18267:0:99999:7:::
 systemd-coredump:!!:18267::::::
-ftp:*:18344:0:99999:7:::
+kovar:$6$wu5uaqP648XfgwtP$TJhCYh8geVqnuutXNFnI2PCaVr/kFTGu2ZIGR0adySCVmBC9zG8aCGjCU/nkTDIFbvD0siHh8RdpaDS4KS6r8/:18346::::::
+karna:$6$YKItzwp8oWWeTKcX$xzpY2h5ccd/rL96kYT1Pu7ZmUAzzd3CJivpL0y35QGDKhEyYHpe2exXd6DBfaPS0aJZwPSiCpFHYDNlffQ1Cv0:18521::::::
+ntpsec:!:19768::::::
+uuidd:!:19768::::::
+ulog:!:19768::::::
+avahi:!:19768::::::

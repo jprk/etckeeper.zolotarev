@@ -4,7 +4,7 @@ bin:x:2:
 sys:x:3:
 adm:x:4:
 tty:x:5:
-disk:x:6:
+disk:x:6:backup
 lp:x:7:
 mail:x:8:
 news:x:9:
@@ -17,7 +17,7 @@ fax:x:21:
 voice:x:22:
 cdrom:x:24:uzivatel
 floppy:x:25:uzivatel
-tape:x:26:
+tape:x:26:backup
 sudo:x:27:
 audio:x:29:uzivatel
 dip:x:30:uzivatel
@@ -66,6 +66,11 @@ Debian-exim:x:113:
 kvm:x:114:
 render:x:115:
 systemd-coredump:x:999:
-ftp:x:105:
 sgx:x:116:
 _ssh:x:110:
+ntpsec:x:105:
+uuidd:x:117:
+ulog:x:118:
+avahi:x:119:
+scanner:x:120:saned
+saned:x:121:

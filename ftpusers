@@ -1,5 +1,4 @@
-# /etc/ftpusers: list of users disallowed FTP access. See ftpusers(5).
-
+# /etc/ftpusers: list of users disallowed FTP access.
 root
 daemon
 bin
@@ -11,4 +10,13 @@ lp
 mail
 news
 uucp
+proxy
+majordom
+postgres
+www-data
+backup
+msql
+operator
+list
+irc
 nobody

@@ -4,7 +4,7 @@ bin:*::
 sys:*::
 adm:*::
 tty:*::
-disk:*::
+disk:*::backup
 lp:*::
 mail:*::
 news:*::
@@ -17,7 +17,7 @@ fax:*::
 voice:*::
 cdrom:*::uzivatel
 floppy:*::uzivatel
-tape:*::
+tape:*::backup
 sudo:*::
 audio:*::uzivatel
 dip:*::uzivatel
@@ -45,7 +45,6 @@ input:!::
 crontab:!::
 netdev:!::uzivatel
 messagebus:!::
-ssh:!::
 uzivatel:!::
 ssl-cert:!::
 mysql:!::
@@ -54,5 +53,11 @@ Debian-exim:!::
 kvm:!::
 render:!::
 systemd-coredump:!!::
-ftp:!::
 sgx:!::
+_ssh:!::
+ntpsec:!::
+uuidd:!::
+ulog:!::
+avahi:!::
+scanner:!::
+saned:!::
