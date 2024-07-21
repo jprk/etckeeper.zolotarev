@@ -15,4 +15,4 @@ sysadm: root
 www-data: sysadm
 
 
-root: uzivatel
+root: jan.prikryl@cvut.cz
