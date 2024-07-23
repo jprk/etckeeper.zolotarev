@@ -5,9 +5,11 @@
 
 # Username to access the MySQL server e.g. dbuser
 #USERNAME=`grep user /etc/mysql/debian.cnf | tail -n 1 | cut -d"=" -f2 | awk '{print $1}'`
+USERNAME=root
 
 # Username to access the MySQL server e.g. password
 #PASSWORD=`grep password /etc/mysql/debian.cnf | tail -n 1 | cut -d"=" -f2 | awk '{print $1}'`
+PASSWORD=3ul3r
 
 # Host name (or IP address) of MySQL server e.g localhost
 DBHOST=localhost
@@ -22,6 +24,8 @@ DBHOST=localhost
 # reading the mysql folder content. Feel free to replace by something else.
 # DBNAMES=`find /var/lib/mysql -mindepth 1 -maxdepth 1 -type d | cut -d'/' -f5 | grep -v ^mysql\$ | tr \\\r\\\n ,\ `
 # This one does a list of dbs using a MySQL statement.
+# DBNAMES=`mysql --defaults-file=/etc/mysql/debian.cnf --execute="SHOW DATABASES" | awk '{print $1}' | grep -v ^Database$ | grep -v ^mysql$ | grep -v ^performance_schema$ | grep -v ^information_schema$ | tr \\\r\\\n ,\ `
+# Update of the above, using username and a password
 DBNAMES=`mysql --defaults-file=/etc/mysql/debian.cnf --execute="SHOW DATABASES" | awk '{print $1}' | grep -v ^Database$ | grep -v ^mysql$ | grep -v ^performance_schema$ | grep -v ^information_schema$ | tr \\\r\\\n ,\ `
 
 # Backup directory location e.g /backups
