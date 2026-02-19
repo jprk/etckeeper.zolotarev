@@ -148,6 +148,22 @@ case "${1:-''}" in
         log_action_msg "$output"
       fi
     else
+      # Try one more time but save error log separately, then spit it out
+      # before logging ends and init script execution ends.
+      if pgrep -ax mariadbd > /dev/null
+      then
+        echo "ERROR: The mariadbd process is running but not responding:"
+        # shellcheck disable=SC2009
+        # Show the mariadbd process and it's parent and next line (if there is a child process)
+        ps faxu | grep mariadbd -C 1
+      else
+        ERROR_LOG_FILE="$(mktemp).err"
+        echo # ensure newline
+        timeout --kill-after=20 10 /usr/bin/mysqld_safe "${@:2}" --log-error="$ERROR_LOG_FILE"
+        echo "Running '/etc/init.d/mariadb start' failed with error log:"
+        cat "$ERROR_LOG_FILE"
+      fi
+
       log_end_msg 1
       log_failure_msg "Please take a look at the syslog"
     fi
@@ -168,13 +184,16 @@ case "${1:-''}" in
       log_end_msg 1
       [ "$VERBOSE" != "no" ] && log_failure_msg "Error: $shutdown_out"
       log_daemon_msg "Killing MariaDB database server by signal" "mariadbd"
-      killall -15 mariadbd
+      killall -15 mariadbd || killall -15 mysqld
       server_down=
       for i in `seq 1 600`; do
         sleep 1
         if mariadbd_status check_dead nowarn; then server_down=1; break; fi
       done
-      if test -z "$server_down"; then killall -9 mariadbd; fi
+      if test -z "$server_down"
+      then
+        killall -9 mariadbd || killall -9 mysqld
+      fi
     fi
   fi
 
