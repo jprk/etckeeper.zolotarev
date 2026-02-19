@@ -72,5 +72,5 @@ ntpsec:x:105:
 uuidd:x:117:
 ulog:x:118:
 avahi:x:119:
-scanner:x:120:
+scanner:x:120:saned
 saned:x:121:

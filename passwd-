@@ -1,5 +1,5 @@
-sysadm:x:0:0:System administrator (zolotarev):/root:/bin/zsh
 root:x:0:0:root:/root:/bin/bash
+sysadm:x:0:0:System administrator (zolotarev):/root:/bin/zsh
 daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
 bin:x:2:2:bin:/bin:/usr/sbin/nologin
 sys:x:3:3:sys:/dev:/usr/sbin/nologin
@@ -40,3 +40,5 @@ ntpsec:x:103:105::/nonexistent:/usr/sbin/nologin
 uuidd:x:109:117::/run/uuidd:/usr/sbin/nologin
 ulog:x:110:118::/var/log/ulog:/bin/false
 avahi:x:111:119:Avahi mDNS daemon,,,:/run/avahi-daemon:/usr/sbin/nologin
+saned:x:112:121::/var/lib/saned:/usr/sbin/nologin
+ftp:x:113:122::/srv/ftp:/usr/sbin/nologin

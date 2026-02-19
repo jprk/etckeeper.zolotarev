@@ -74,3 +74,4 @@ ulog:x:118:
 avahi:x:119:
 scanner:x:120:saned
 saned:x:121:
+ftp:x:122:
