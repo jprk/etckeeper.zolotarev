@@ -84,9 +84,9 @@
   <!-- not needed due to the need to use explicitly by mvg: -->
   <!-- <policy domain="delegate" rights="none" pattern="MVG" /> -->
   <!-- use curl -->
-  <policy domain="delegate" rights="none" pattern="URL" />
-  <policy domain="delegate" rights="none" pattern="HTTPS" />
-  <policy domain="delegate" rights="none" pattern="HTTP" />
+  <policy domain="coder" rights="none" pattern="URL" />
+  <policy domain="coder" rights="none" pattern="HTTPS" />
+  <policy domain="coder" rights="none" pattern="HTTP" />
   <!-- in order to avoid to get image with password text -->
   <policy domain="path" rights="none" pattern="@*"/>
   <!-- disable ghostscript format types -->
