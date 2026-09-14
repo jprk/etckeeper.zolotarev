@@ -31,8 +31,8 @@ text/troff; /usr/bin/man -X100 -l %s; test=test -n "$DISPLAY" -a -e /usr/bin/gxd
 application/x-troff-man; /usr/bin/man -l %s; needsterminal; description=Man page
 text/troff; /usr/bin/man -l %s; needsterminal; description=Man page
 text/html; /usr/bin/sensible-browser %s; description=HTML Text; nametemplate=%s.html
-application/x-troff-man; /usr/bin/nroff -mandoc -Tutf8; copiousoutput; print=/usr/bin/nroff -mandoc -Tutf8 | print text/plain:-
-text/troff; /usr/bin/nroff -mandoc -Tutf8; copiousoutput; print=/usr/bin/nroff -mandoc -Tutf8 | print text/plain:-
+application/x-troff-man; /usr/bin/nroff -t -mandoc -Tutf8; copiousoutput; print=/usr/bin/nroff -t -mandoc -Tutf8 | print text/plain:-
+text/troff; /usr/bin/nroff -t -mandoc -Tutf8; copiousoutput; print=/usr/bin/nroff -t -mandoc -Tutf8 | print text/plain:-
 application/x-info; /usr/bin/info -f %s; needsterminal; description=GNU Info document
 application/mbox; mutt -Rf %s; edit=mutt -f %s; needsterminal
 application/x-dvi; /usr/bin/xdvi %s; description=TeX DVI; test=test -n "$DISPLAY"; nametemplate=%s.dvi
@@ -79,23 +79,81 @@ image/x-xpixmap; /usr/bin/display-im6.q16 -nostdin %s; test=test -n "$DISPLAY"
 image/x-xwindowdump; /usr/bin/display-im6.q16 -nostdin %s; test=test -n "$DISPLAY"
 image/x-icon; /usr/bin/display-im6.q16 -nostdin %s; test=test -n "$DISPLAY"
 image/yuv; /usr/bin/display-im6.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/avs; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/bie; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-ms-bmp; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/cmyk; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/dcx; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/eps; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/fax; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/fits; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/gif; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/gray; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/jpeg; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/pjpeg; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/miff; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/mono; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/mtv; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-portable-bitmap; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/pcd; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/pcx; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/pdf; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-portable-graymap; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/pict; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/png; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-portable-anymap; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-portable-pixmap; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/ps; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/rad; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-rgb; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/rgba; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/rla; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/rle; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/sgi; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/sun-raster; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/targa; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/tiff; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/uyvy; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/vid; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/viff; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-xbitmap; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-xpixmap; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-xwindowdump; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/x-icon; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
+image/yuv; /usr/bin/display-im7.q16 -nostdin %s; test=test -n "$DISPLAY"
 x-scheme-handler/mailto; emacs -f message-mailto %s; test=test -n "$DISPLAY"
-x-scheme-handler/mailto; bash -c "u=\\${1//\\\\\\\\/\\\\\\\\\\\\\\\\}\; u=\\${u//\\\\\\"/\\\\\\\\\\\\\\"}\; exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" --eval \\"(message-mailto \\\\\\"\\$u\\\\\\")\\"" bash %s; test=test -n "$DISPLAY"
-text/english; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/plain; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-makefile; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-c++hdr; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-c++src; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-chdr; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-csrc; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-java; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-moc; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-pascal; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-tcl; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-tex; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-application/x-shellscript; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-c; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
-text/x-c++; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/english; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/plain; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-makefile; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-c++hdr; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-c++src; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-chdr; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-csrc; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-java; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-moc; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-pascal; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-tcl; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-tex; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+application/x-shellscript; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-c; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+text/x-c++; /usr/bin/emacs -nw %s; needsterminal; test=command -v /usr/bin/emacs > /dev/null 2>&1
+x-scheme-handler/mailto; /usr/bin/emacsclient --alternate-editor= --eval "(message-mailto (pop server-eval-args-left))" %s; test=test -n "$DISPLAY"
+text/english; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/plain; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-makefile; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c++hdr; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c++src; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-chdr; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-csrc; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-java; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-moc; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-pascal; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-tcl; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-tex; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+application/x-shellscript; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c++; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+x-scheme-handler/org-protocol; sh -c "if [ -n \\"\\$*\\" ]\; then exec /usr/bin/emacsclient --alternate-editor= --reuse-frame \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
 application/pkcs12; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 application/pkcs12+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 application/pkcs7-mime; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
@@ -183,6 +241,48 @@ image/x-xpixmap; display-im6.q16 'xpm:%s'; test=test -n "$DISPLAY"
 image/x-xwindowdump; display-im6.q16 'xwd:%s'; test=test -n "$DISPLAY"
 image/x-icon; display-im6.q16 'icon:%s'; test=test -n "$DISPLAY"
 image/yuv; display-im6.q16 'yuv:%s'; test=test -n "$DISPLAY"
+image/avs; display-im7.q16 avs:%s; test=test -n "$DISPLAY"
+image/bie; display-im7.q16 jbig:%s; test=test -n "$DISPLAY"
+image/x-ms-bmp; display-im7.q16 bmp:%s; test=test -n "$DISPLAY"
+image/cmyk; display-im7.q16 cmyk:%s; test=test -n "$DISPLAY"
+image/dcx; display-im7.q16 dcx:%s; test=test -n "$DISPLAY"
+image/eps; display-im7.q16 eps:%s; test=test -n "$DISPLAY"
+image/fax; display-im7.q16 fax:%s; test=test -n "$DISPLAY"
+image/fits; display-im7.q16 fits:%s; test=test -n "$DISPLAY"
+image/gif; display-im7.q16 gif:%s; test=test -n "$DISPLAY"
+image/gray; display-im7.q16 gray:%s; test=test -n "$DISPLAY"
+image/jpeg; display-im7.q16 jpeg:%s; test=test -n "$DISPLAY"
+image/pjpeg; display-im7.q16 jpeg:%s; test=test -n "$DISPLAY"
+image/miff; display-im7.q16 miff:%s; test=test -n "$DISPLAY"
+image/mono; display-im7.q16 mono:%s; test=test -n "$DISPLAY"
+image/mtv; display-im7.q16 mtv:%s; test=test -n "$DISPLAY"
+image/x-portable-bitmap; display-im7.q16 pbm:%s; test=test -n "$DISPLAY"
+image/pcd; display-im7.q16 pcd:%s; test=test -n "$DISPLAY"
+image/pcx; display-im7.q16 pcx:%s; test=test -n "$DISPLAY"
+image/pdf; display-im7.q16 pdf:%s; test=test -n "$DISPLAY"
+image/x-portable-graymap; display-im7.q16 pgm:%s; test=test -n "$DISPLAY"
+image/pict; display-im7.q16 pict:%s; test=test -n "$DISPLAY"
+image/png; display-im7.q16 png:%s; test=test -n "$DISPLAY"
+image/x-portable-anymap; display-im7.q16 pnm:%s; test=test -n "$DISPLAY"
+image/x-portable-pixmap; display-im7.q16 ppm:%s; test=test -n "$DISPLAY"
+image/ps; display-im7.q16 ps:%s; test=test -n "$DISPLAY"
+image/rad; display-im7.q16 rad:%s; test=test -n "$DISPLAY"
+image/x-rgb; display-im7.q16 rgb:%s; test=test -n "$DISPLAY"
+image/rgba; display-im7.q16 rgba:%s; test=test -n "$DISPLAY"
+image/rla; display-im7.q16 rla:%s; test=test -n "$DISPLAY"
+image/rle; display-im7.q16 rle:%s; test=test -n "$DISPLAY"
+image/sgi; display-im7.q16 sgi:%s; test=test -n "$DISPLAY"
+image/sun-raster; display-im7.q16 sun:%s; test=test -n "$DISPLAY"
+image/targa; display-im7.q16 tga:%s; test=test -n "$DISPLAY"
+image/tiff; display-im7.q16 tiff:%s; test=test -n "$DISPLAY"
+image/uyvy; display-im7.q16 uyvy:%s; test=test -n "$DISPLAY"
+image/vid; display-im7.q16 vid:%s; test=test -n "$DISPLAY"
+image/viff; display-im7.q16 viff:%s; test=test -n "$DISPLAY"
+image/x-xbitmap; display-im7.q16 xbm:%s; test=test -n "$DISPLAY"
+image/x-xpixmap; display-im7.q16 xpm:%s; test=test -n "$DISPLAY"
+image/x-xwindowdump; display-im7.q16 xwd:%s; test=test -n "$DISPLAY"
+image/x-icon; display-im7.q16 icon:%s; test=test -n "$DISPLAY"
+image/yuv; display-im7.q16 yuv:%s; test=test -n "$DISPLAY"
 application/x-troff-man; /usr/bin/man -Tascii -l %s | col -b; copiousoutput; description=Man page
 text/troff; /usr/bin/man -Tascii -l %s | col -b; copiousoutput; description=Man page
 text/*; less %s; needsterminal
@@ -193,4 +293,5 @@ application/x-gtar; /bin/tar tvf %s; print=/bin/tar tvf - | print text/plain:-; 
 application/x-ustar; /bin/tar tvf %s; print=/bin/tar tvf - | print text/plain:-; copiousoutput
 text/*; more %s; needsterminal
 text/*; view %s; edit=vi %s; compose=vi %s; needsterminal
+application/postscript; /usr/bin/ps2txt '%s'; copiousoutput; description=Postscript
 application/vnd.debian.binary-package; /usr/lib/mime/debian-view %s; needsterminal; description=Debian GNU/Linux Package; nametemplate=%s.deb

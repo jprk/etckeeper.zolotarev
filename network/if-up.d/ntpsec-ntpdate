@@ -31,6 +31,8 @@ if [ -r /lib/udev/hotplug.functions ]; then
 fi
 
 service="ntpsec"
+# ntpdate-debian checks this variable, so it needs to be exported
+export service
 
 invoke-rc.d --quiet "$service" stop >/dev/null 2>&1 || true
 

@@ -56,7 +56,8 @@
   /var/lib/ntpsec/ntp.drift rw,
   /var/lib/ntpsec/ntp.drift-tmp rw,
   /var/lib/ntpsec/nts-keys rw,
-  /usr/share/zoneinfo/leap-seconds.list rw,
+  /var/lib/ntpsec/nts-keys-tmp rw,
+  /usr/share/zoneinfo/leap-seconds.list r,
 
   /var/log/ntp w,
   /var/log/ntp.log w,
@@ -67,6 +68,7 @@
   /var/log/ntpsec/protostats* rwl,
   /var/log/ntpsec/rawstats*   rwl,
   /var/log/ntpsec/sysstats*   rwl,
+  /var/log/ntpsec/usestats*   rwl,
 
   /{,var/}run/ntpd.pid w,
 

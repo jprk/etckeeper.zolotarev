@@ -4,7 +4,7 @@ define('ADMINER_DIR', '/usr/share/adminer');
 
 function adminer_object() {
     // required to run any plugin
-    include_once ADMINER_DIR . "/plugins/plugin.php";
+    include_once ADMINER_DIR . "/include/plugins.inc.php";
 
     // autoloader
     foreach (glob(ADMINER_DIR . "/plugins/*.php") as $filename) {
@@ -21,12 +21,12 @@ function adminer_object() {
     );
 
     /* It is possible to combine customization and plugins:
-    class AdminerCustomization extends AdminerPlugin {
+    class AdminerCustomization extends Adminer\Plugins {
     }
     return new AdminerCustomization($plugins);
     */
 
-    return new AdminerPlugin($plugins);
+    return new Adminer\Plugins($plugins);
 }
 
 include ADMINER_DIR . "/adminer.php";

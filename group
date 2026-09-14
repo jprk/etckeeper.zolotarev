@@ -75,3 +75,4 @@ avahi:x:119:
 scanner:x:120:saned
 saned:x:121:
 ftp:x:122:
+clock:x:998:
