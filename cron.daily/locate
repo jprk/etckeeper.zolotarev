@@ -11,6 +11,11 @@ set -e
 
 [ -e /usr/bin/updatedb.findutils ] || exit 0
 
+# skip in favour of systemd timer if called from cron.daily
+if [ -d /run/systemd/system ] && [ "$1" != "systemd-timer" ]; then
+	exit 0
+fi
+
 if [ "$(id -u)" != "0" ]; then
 	echo "You must be root."
 	exit 1
@@ -45,7 +50,9 @@ export FINDOPTIONS PRUNEFS PRUNEPATHS NETPATHS LOCALUSER
 # Set the task to run with desired I/O priority if possible
 # Linux supports io scheduling priorities and classes since
 # 2.6.13 with the CFQ io scheduler
-if [ -x /usr/bin/ionice ] && [ "${UPDATDB_NO_IONICE}" = "" ]; then
+# Skip if running from systemd-timer, there are native settings there.
+if [ -x /usr/bin/ionice ] && [ "${UPDATDB_NO_IONICE}" = "" ] && \
+	[ "$1" != "systemd-timer" ]; then
 	# don't run ionice if kernel version < 2.6.13
 	KVER=$(uname -r)
 	case "$KVER" in

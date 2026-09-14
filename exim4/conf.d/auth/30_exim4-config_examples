@@ -218,6 +218,9 @@
 #   public_name = PLAIN
 #   server_socket = /var/spool/exim4/dovecot.auth-client
 #   server_set_id = $auth1
+#   .ifndef AUTH_SERVER_ALLOW_NOTLS_PASSWORDS
+#   server_advertise_condition = ${if eq{$tls_in_cipher}{}{}{*}}
+#   .endif
 
 ##############
 # See /usr/share/doc/exim4-base/README.Debian.gz

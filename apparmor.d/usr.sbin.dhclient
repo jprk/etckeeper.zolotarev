@@ -69,9 +69,11 @@
   # Support the new executable helper from NetworkManager.
   /usr/lib/NetworkManager/nm-dhcp-helper          Pxrm,
   signal (receive) peer=/usr/lib/NetworkManager/nm-dhcp-helper,
+  /usr/libexec/nm-dhcp-helper                     Pxrm,
+  signal (receive) peer=/usr/libexec/nm-dhcp-helper,
 
   # Site-specific additions and overrides. See local/README for details.
-  #include <local/sbin.dhclient>
+  #include <local/usr.sbin.dhclient>
 }
 
 /usr/lib/NetworkManager/nm-dhcp-client.action {
@@ -86,10 +88,10 @@
   network inet6 dgram,
 }
 
-/usr/lib/NetworkManager/nm-dhcp-helper {
+/usr/{lib/NetworkManager,libexec}/nm-dhcp-helper {
   #include <abstractions/base>
   #include <abstractions/dbus>
-  /usr/lib/NetworkManager/nm-dhcp-helper mr,
+  /usr/{lib/NetworkManager,libexec}/nm-dhcp-helper mr,
 
   /run/NetworkManager/private-dhcp rw,
   signal (send) peer=/sbin/dhclient,

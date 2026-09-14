@@ -191,6 +191,7 @@ fi
 
 if [ "yes" != "$SUBMITTED" ] ; then
 	logger -t popularity-contest "unable to submit report."
+	rm -f $POPCONNEW $POPCONNEW.gpg
 else
 	mv $POPCONNEW $POPCONOLD
 	if [ -n "$POPCONGPG" ]; then

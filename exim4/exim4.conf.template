@@ -335,13 +335,6 @@ smtputf8_advertise_hosts = MAIN_SMTPUTF8_ADVERTISE_HOSTS
 # See /usr/share/doc/exim4-base/README.Debian.gz for explanations.
 
 .ifdef MAIN_TLS_ENABLE
-# Defines what hosts to 'advertise' STARTTLS functionality to. The
-# default, *, will advertise to all hosts that connect with EHLO.
-.ifndef MAIN_TLS_ADVERTISE_HOSTS
-MAIN_TLS_ADVERTISE_HOSTS = *
-.endif
-tls_advertise_hosts = MAIN_TLS_ADVERTISE_HOSTS
-
 
 # Full paths to Certificate and Private Key. The Private Key file
 # must be kept 'secret' and should be owned by root.Debian-exim mode
@@ -406,6 +399,12 @@ tls_try_verify_hosts = MAIN_TLS_TRY_VERIFY_HOSTS
 
 .else
 # Use upstream defaults
+.endif
+
+# Defines what hosts to 'advertise' STARTTLS functionality to. The
+# upstream default, *, will advertise to all hosts that connect with EHLO.
+.ifdef MAIN_TLS_ADVERTISE_HOSTS
+tls_advertise_hosts = MAIN_TLS_ADVERTISE_HOSTS
 .endif
 #####################################################
 ### end main/03_exim4-config_tlsoptions
@@ -1366,7 +1365,7 @@ FIRST_USER_ACCOUNT_UID = 0
 .endif
 
 .ifndef DEFAULT_SYSTEM_ACCOUNT_ALIAS
-DEFAULT_SYSTEM_ACCOUNT_ALIAS = :fail: no mail to system accounts
+DEFAULT_SYSTEM_ACCOUNT_ALIAS = :fail: Unrouteable address
 .endif
 
 COND_SYSTEM_USER_AND_REMOTE_SUBMITTER = "\
@@ -1812,7 +1811,6 @@ begin retry
 
 # Please note that these rules only limit the frequency of retries, the
 # effective retry-time depends on the frequency of queue-running, too.
-# See QUEUEINTERVAL in /etc/default/exim4.
 
 # Address or Domain    Error       Retries
 # -----------------    -----       -------
@@ -2094,6 +2092,9 @@ begin authenticators
 #   public_name = PLAIN
 #   server_socket = /var/spool/exim4/dovecot.auth-client
 #   server_set_id = $auth1
+#   .ifndef AUTH_SERVER_ALLOW_NOTLS_PASSWORDS
+#   server_advertise_condition = ${if eq{$tls_in_cipher}{}{}{*}}
+#   .endif
 
 ##############
 # See /usr/share/doc/exim4-base/README.Debian.gz

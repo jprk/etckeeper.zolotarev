@@ -6,7 +6,9 @@ if [ -n "$DBUS_SESSION_BUS_ADDRESS" ] && \
   (
     # unset login-session-specifics
     unset XDG_SEAT
+    unset XDG_SEAT_PATH
     unset XDG_SESSION_ID
+    unset XDG_SESSION_PATH
     unset XDG_VTNR
 
     # tell dbus-daemon --session (and systemd --user, if running)

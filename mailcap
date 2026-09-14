@@ -80,22 +80,22 @@ image/x-xwindowdump; /usr/bin/display-im6.q16 -nostdin %s; test=test -n "$DISPLA
 image/x-icon; /usr/bin/display-im6.q16 -nostdin %s; test=test -n "$DISPLAY"
 image/yuv; /usr/bin/display-im6.q16 -nostdin %s; test=test -n "$DISPLAY"
 x-scheme-handler/mailto; emacs -f message-mailto %s; test=test -n "$DISPLAY"
-x-scheme-handler/mailto; bash -c "u=\\${1//\\\\\\\\/\\\\\\\\\\\\\\\\}; u=\\${u//\\\\\\"/\\\\\\\\\\\\\\"}; exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" --eval \\"(message-mailto \\\\\\"\\$u\\\\\\")\\"" bash %s; test=test -n "$DISPLAY"
-text/english; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/plain; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-makefile; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-c++hdr; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-c++src; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-chdr; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-csrc; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-java; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-moc; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-pascal; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-tcl; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-tex; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-application/x-shellscript; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-c; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
-text/x-c++; sh -c "if [ -n \\"\\$*\\" ]; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"; else exec emacsclient --alternate-editor= --create-frame; fi" sh %s; test=test -n "$DISPLAY"
+x-scheme-handler/mailto; bash -c "u=\\${1//\\\\\\\\/\\\\\\\\\\\\\\\\}\; u=\\${u//\\\\\\"/\\\\\\\\\\\\\\"}\; exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" --eval \\"(message-mailto \\\\\\"\\$u\\\\\\")\\"" bash %s; test=test -n "$DISPLAY"
+text/english; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/plain; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-makefile; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c++hdr; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c++src; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-chdr; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-csrc; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-java; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-moc; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-pascal; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-tcl; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-tex; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+application/x-shellscript; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
+text/x-c++; sh -c "if [ -n \\"\\$*\\" ]\; then exec emacsclient --alternate-editor= --display=\\"\\$DISPLAY\\" \\"\\$@\\"\; else exec emacsclient --alternate-editor= --create-frame\; fi" sh %s; test=test -n "$DISPLAY"
 application/pkcs12; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 application/pkcs12+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 application/pkcs7-mime; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
@@ -116,21 +116,21 @@ application/pkcs10; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 application/pkcs10+pem; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 application/x-spkac; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
 application/x-spkac+base64; /usr/bin/gcr-viewer %s; test=test -n "$DISPLAY"
-text/english; vim %s; needsterminal
-text/plain; vim %s; needsterminal
-text/x-makefile; vim %s; needsterminal
-text/x-c++hdr; vim %s; needsterminal
-text/x-c++src; vim %s; needsterminal
-text/x-chdr; vim %s; needsterminal
-text/x-csrc; vim %s; needsterminal
-text/x-java; vim %s; needsterminal
-text/x-moc; vim %s; needsterminal
-text/x-pascal; vim %s; needsterminal
-text/x-tcl; vim %s; needsterminal
-text/x-tex; vim %s; needsterminal
-application/x-shellscript; vim %s; needsterminal
-text/x-c; vim %s; needsterminal
-text/x-c++; vim %s; needsterminal
+text/english; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/plain; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-makefile; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-c++hdr; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-c++src; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-chdr; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-csrc; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-java; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-moc; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-pascal; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-tcl; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-tex; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+application/x-shellscript; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-c; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
+text/x-c++; vim %s; needsterminal; test=command -v vim > /dev/null 2>&1
 text/html; /usr/bin/elinks -force-html %s; needsterminal; description=HTML Text; nametemplate=%s.html
 text/html; /usr/bin/links %s; needsterminal; description=HTML Text; nametemplate=%s.html
 text/plain; view %s; edit=vim %s; compose=vim %s; test=test -x /usr/bin/vim; needsterminal
